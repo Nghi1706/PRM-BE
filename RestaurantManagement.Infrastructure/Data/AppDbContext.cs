@@ -9,10 +9,24 @@ namespace RestaurantManagement.Infrastructure.Data
             : base(options) { }
 
         public DbSet<Restaurant> Restaurants { get; set; }
+
+        // status category
         public DbSet<StatusCategory> StatusCategories { get; set; }
+        public DbSet<Status> Status { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StatusCategory>().ToTable("StatusCategories");
+            modelBuilder.Entity<Status>().ToTable("Statuses");
+
+            base.OnModelCreating(modelBuilder);
+
         }
+
+        //     // status
+        //     public DbSet<Status> Status { get; set; }
+        //     protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //     {
+        //         modelBuilder.Entity<Status>().ToTable("Status");
+        //     }
     }
 }

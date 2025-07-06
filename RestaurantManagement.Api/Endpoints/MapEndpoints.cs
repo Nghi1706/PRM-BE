@@ -8,7 +8,10 @@ public static class MapEndpoints
     public static RouteGroupBuilder MapAppEndpoints(this RouteGroupBuilder group)
     {
         group.MapGet("/health", () => Results.Ok("Healthy"));
+        // status categories endpoint
         group.MapGroup("/statuscategories").MapStatusCategoryEndpoints();
+        // status endpoint
+        group.MapGroup("/statuses").MapStatusEndpoints();
 
         // Các group khác:
         // group.MapGroup("/orders").MapOrderEndpoints();
