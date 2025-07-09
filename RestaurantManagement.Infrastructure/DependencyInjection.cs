@@ -18,6 +18,8 @@ namespace RestaurantManagement.Infrastructure
 
             services.AddScoped<IStatusRepository, StatusRepository>();
 
+            services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+
             return services;
         }
     }

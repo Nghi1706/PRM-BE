@@ -17,6 +17,7 @@ namespace RestaurantManagement.Infrastructure.Data
         {
             modelBuilder.Entity<StatusCategory>().ToTable("StatusCategories");
             modelBuilder.Entity<Status>().ToTable("Statuses");
+            modelBuilder.Entity<Restaurant>().ToTable("Restaurants");
 
             base.OnModelCreating(modelBuilder);
 

@@ -12,6 +12,8 @@ public static class MapEndpoints
         group.MapGroup("/statuscategories").MapStatusCategoryEndpoints();
         // status endpoint
         group.MapGroup("/statuses").MapStatusEndpoints();
+        // restaurant endpoint
+        group.MapGroup("/restaurants").MapRestaurantEndpoints();
 
         // Các group khác:
         // group.MapGroup("/orders").MapOrderEndpoints();
