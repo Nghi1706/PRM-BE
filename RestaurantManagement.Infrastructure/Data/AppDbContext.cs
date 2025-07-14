@@ -13,11 +13,15 @@ namespace RestaurantManagement.Infrastructure.Data
         // status category
         public DbSet<StatusCategory> StatusCategories { get; set; }
         public DbSet<Status> Status { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StatusCategory>().ToTable("StatusCategories");
             modelBuilder.Entity<Status>().ToTable("Statuses");
             modelBuilder.Entity<Restaurant>().ToTable("Restaurants");
+            modelBuilder.Entity<Role>().ToTable("Roles");
+            modelBuilder.Entity<User>().ToTable("Users");
 
             base.OnModelCreating(modelBuilder);
 

@@ -14,6 +14,10 @@ public static class MapEndpoints
         group.MapGroup("/statuses").MapStatusEndpoints();
         // restaurant endpoint
         group.MapGroup("/restaurants").MapRestaurantEndpoints();
+        // role endpoint
+        group.MapGroup("/roles").MapRoleEndpoints();
+        // user endpoint
+        group.MapGroup("/users").MapUserEndpoints();
 
         // Các group khác:
         // group.MapGroup("/orders").MapOrderEndpoints();

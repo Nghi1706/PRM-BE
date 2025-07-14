@@ -11,6 +11,8 @@ public static class DependencyInjection
         services.AddScoped<IStatusCategoryService, StatusCategoryService>();
         services.AddScoped<IStatusService, StatusService>();
         services.AddScoped<IRestaurantService, RestaurantService>();
+        services.AddScoped<IRoleServices, RoleService>();
+        services.AddScoped<IUserService, UserService>();
         return services;
     }
 }
