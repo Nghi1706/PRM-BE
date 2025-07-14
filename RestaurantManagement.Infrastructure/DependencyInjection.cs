@@ -20,6 +20,10 @@ namespace RestaurantManagement.Infrastructure
 
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
+            services.AddScoped<IRoleRepository, RoleRepository>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+
             return services;
         }
     }
