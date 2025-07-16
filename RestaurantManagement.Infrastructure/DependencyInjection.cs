@@ -28,6 +28,8 @@ namespace RestaurantManagement.Infrastructure
 
             services.AddScoped<IRoomRepository, RoomRepository>();
 
+            services.AddScoped<ITableRepository, TableRepository>();
+
             return services;
         }
     }

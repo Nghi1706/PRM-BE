@@ -22,6 +22,8 @@ public static class MapEndpoints
         group.MapGroup("/auth").MapAuthEndpoints();
         // room endpoint
         group.MapGroup("/rooms").MapRoomEndpoints();
+        // table endpoint
+        group.MapGroup("/tables").MapTableEndpoints();
 
         // Các group khác:
         // group.MapGroup("/orders").MapOrderEndpoints();

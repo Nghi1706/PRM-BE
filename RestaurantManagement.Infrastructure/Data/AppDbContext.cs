@@ -17,6 +17,7 @@ namespace RestaurantManagement.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Table> Tables { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,7 @@ namespace RestaurantManagement.Infrastructure.Data
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<RefreshToken>().ToTable("RefreshTokens");
             modelBuilder.Entity<Room>().ToTable("Rooms");
+            modelBuilder.Entity<Table>().ToTable("Tables");
 
             base.OnModelCreating(modelBuilder);
 
