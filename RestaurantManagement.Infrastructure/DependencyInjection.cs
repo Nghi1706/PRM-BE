@@ -19,10 +19,12 @@ namespace RestaurantManagement.Infrastructure
             services.AddScoped<IStatusRepository, StatusRepository>();
 
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
-
+            
             services.AddScoped<IRoleRepository, RoleRepository>();
 
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
             return services;
         }

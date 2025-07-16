@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<IRestaurantService, RestaurantService>();
         services.AddScoped<IRoleServices, RoleService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<AuthService>();
         return services;
     }
 }

@@ -18,10 +18,12 @@ public static class MapEndpoints
         group.MapGroup("/roles").MapRoleEndpoints();
         // user endpoint
         group.MapGroup("/users").MapUserEndpoints();
+        // auth endpoint
+        group.MapGroup("/auth").MapAuthEndpoints();
 
         // Các group khác:
         // group.MapGroup("/orders").MapOrderEndpoints();
 
         return group;
     }
-}
+}       
