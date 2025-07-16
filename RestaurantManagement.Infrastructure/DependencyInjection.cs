@@ -26,6 +26,8 @@ namespace RestaurantManagement.Infrastructure
 
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
+            services.AddScoped<IRoomRepository, RoomRepository>();
+
             return services;
         }
     }

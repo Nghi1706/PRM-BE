@@ -16,6 +16,7 @@ namespace RestaurantManagement.Infrastructure.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,16 +26,10 @@ namespace RestaurantManagement.Infrastructure.Data
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<RefreshToken>().ToTable("RefreshTokens");
+            modelBuilder.Entity<Room>().ToTable("Rooms");
 
             base.OnModelCreating(modelBuilder);
 
         }
-
-        //     // status
-        //     public DbSet<Status> Status { get; set; }
-        //     protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //     {
-        //         modelBuilder.Entity<Status>().ToTable("Status");
-        //     }
     }
 }
