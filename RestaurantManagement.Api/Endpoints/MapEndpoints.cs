@@ -24,6 +24,10 @@ public static class MapEndpoints
         group.MapGroup("/rooms").MapRoomEndpoints();
         // table endpoint
         group.MapGroup("/tables").MapTableEndpoints();
+        // category endpoint
+        group.MapGroup("/categories").MapCategoryEndpoints();
+        // dish endpoint
+        group.MapGroup("/dishes").MapDishEndpoints();
 
         // Các group khác:
         // group.MapGroup("/orders").MapOrderEndpoints();

@@ -16,6 +16,8 @@ public static class DependencyInjection
         services.AddScoped<AuthService>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<ITableService, TableService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IDishService, DishService>();
         return services;
     }
 }
