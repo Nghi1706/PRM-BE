@@ -34,6 +34,12 @@ namespace RestaurantManagement.Infrastructure
 
             services.AddScoped<IDishRepository, DishRepository>();
 
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+
+            services.AddScoped<ITableSessionRepository, TableSessionRepository>();
+
             return services;
         }
     }

@@ -28,6 +28,12 @@ public static class MapEndpoints
         group.MapGroup("/categories").MapCategoryEndpoints();
         // dish endpoint
         group.MapGroup("/dishes").MapDishEndpoints();
+        // order endpoint
+        group.MapGroup("/orders").MapOrderEndpoints();
+        // order detail endpoint
+        group.MapGroup("/orderdetails").MapOrderDetailEndpoints();
+        // table session endpoint
+        group.MapGroup("/tablesessions").MapTableSessionEndpoints();
 
         // Các group khác:
         // group.MapGroup("/orders").MapOrderEndpoints();

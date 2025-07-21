@@ -17,3 +17,27 @@ public class RoleDto
     public Guid? UpdatedByUser { get; set; }
     public Guid? StatusId { get; set; }
 }
+
+public class CreateRoleDto
+{
+    public required string Name { get; set; }
+    public string? Description { get; set; }
+    public bool? IsActive { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public Guid? CreatedByUser { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public Guid? UpdatedByUser { get; set; }
+    public Guid? StatusId { get; set; }
+}
+public class UpdateRoleDto
+{
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public bool? IsActive { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public Guid? CreatedByUser { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public Guid? UpdatedByUser { get; set; }
+    public Guid? StatusId { get; set; }
+}
+
