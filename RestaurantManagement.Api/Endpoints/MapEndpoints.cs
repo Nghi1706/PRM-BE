@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Routing;
+    using Microsoft.AspNetCore.Routing;
 
 namespace RestaurantManagement.Api.Endpoints;
 
@@ -34,6 +34,12 @@ public static class MapEndpoints
         group.MapGroup("/orderdetails").MapOrderDetailEndpoints();
         // table session endpoint
         group.MapGroup("/tablesessions").MapTableSessionEndpoints();
+        // table status type endpoint
+        group.MapGroup("/tablestatustypes").MapTableStatusTypeEndpoints();
+        // order status type endpoint
+        group.MapGroup("/orderstatustypes").MapOrderStatusTypeEndpoints();
+        // dish status type endpoint
+        group.MapGroup("/dishstatustypes").MapDishStatusTypeEndpoints();
 
         // Các group khác:
         // group.MapGroup("/orders").MapOrderEndpoints();

@@ -5,7 +5,7 @@ public class Table
     public Guid Id { get; set; }
     public Guid RoomId { get; set; }
     public string Name { get; set; } = default!;
-    public Guid StatusId { get; set; }
+    public int TableStatusId { get; set; }
     public string? Position { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime? CreatedAt { get; set; }

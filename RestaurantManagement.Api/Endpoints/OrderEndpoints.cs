@@ -13,9 +13,9 @@ public static class OrderEndpoints
             return Results.Ok(ApiResponse.Success(data));
         });
 
-        group.MapGet("/{id:guid}", async (Guid id, [FromServices] IOrderService service) =>
+        group.MapGet("/{roomId:guid}", async (Guid roomId, [FromServices] IOrderService service) =>
         {
-            var order = await service.GetByIdAsync(id);
+            var order = await service.GetByIdAsync(roomId);
             return order != null
                 ? Results.Ok(ApiResponse.Success(order))
                 : Results.NotFound(ApiResponse.Fail("Order not found"));

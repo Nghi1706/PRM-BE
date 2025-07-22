@@ -17,19 +17,21 @@ public class TableService : ITableService
     public async Task<IEnumerable<TableDto>> GetAllAsync(Guid roomId)
     {
         var tables = await _tableRepository.GetAllAsync(roomId);
-        return tables.Select(t => new TableDto
-        {
-            Id = t.Id,
-            RoomId = t.RoomId,
-            Name = t.Name,
-            Position = t.Position,
-            StatusId = t.StatusId,
-            IsActive = t.IsActive,
-            CreatedAt = t.CreatedAt,
-            CreatedByUser = t.CreatedByUser,
-            UpdatedAt = t.UpdatedAt,
-            UpdatedByUser = t.UpdatedByUser
-        });
+        return tables
+            .Select(table => new TableDto
+            {
+                Id = table.Table.Id,
+                RoomId = table.Table.RoomId,
+                StatusId = table.Table.TableStatusId,
+                StatusName = table.StatusName,
+                Name = table.Table.Name,
+                Position = table.Table.Position,
+                IsActive = table.Table.IsActive,
+                CreatedAt = table.Table.CreatedAt,
+                CreatedByUser = table.Table.CreatedByUser,
+                UpdatedAt = table.Table.UpdatedAt,
+                UpdatedByUser = table.Table.UpdatedByUser
+            });
     }
 
     public async Task<TableDto?> GetByIdAsync(Guid id)
@@ -56,7 +58,7 @@ public class TableService : ITableService
         {
             RoomId = dto.RoomId,
             Name = dto.Name,
-            StatusId = dto.StatusId,
+            TableStatusId = dto.StatusId,
             Position = dto.Position,
             IsActive = true,
             CreatedAt = DateTime.UtcNow,
@@ -69,7 +71,7 @@ public class TableService : ITableService
             Id = table.Id,
             RoomId = table.RoomId,
             Name = table.Name,
-            StatusId = table.StatusId,
+            StatusId = table.TableStatusId,
             Position = table.Position,
             IsActive = table.IsActive,
             CreatedAt = table.CreatedAt,
