@@ -24,6 +24,12 @@ public class OrderService : IOrderService
         return Map(entity);
     }
 
+    public async Task<IEnumerable<OrderDto>> GetByRoomAsync(Guid roomId)
+        => (await _repo.GetByRoomAsync(roomId)).Select(Map);
+
+    public async Task<IEnumerable<OrderDto>> GetByTableAsync(Guid tableId)
+        => (await _repo.GetByTableAsync(tableId)).Select(Map);
+
     public async Task<OrderDto> CreateAsync(CreateOrderDto dto)
     {
         var entity = new Order

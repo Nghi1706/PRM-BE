@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using RestaurantManagement.Application.Interfaces;
 using RestaurantManagement.Application.DTOs;
+using RestaurantManagement.Application.Interfaces;
+using RestaurantManagement.Domain.Entities;
 
 namespace RestaurantManagement.Api.Endpoints;
 public static class OrderEndpoints
@@ -13,12 +14,22 @@ public static class OrderEndpoints
             return Results.Ok(ApiResponse.Success(data));
         });
 
-        group.MapGet("/{roomId:guid}", async (Guid roomId, [FromServices] IOrderService service) =>
+        group.MapGet("/{id:guid}", async (Guid id, [FromServices] IOrderService service) =>
         {
-            var order = await service.GetByIdAsync(roomId);
+            var order = await service.GetByIdAsync(id);
             return order != null
                 ? Results.Ok(ApiResponse.Success(order))
                 : Results.NotFound(ApiResponse.Fail("Order not found"));
+        });
+        group.MapGet("/room/{roomId:guid}", async (Guid roomId, [FromServices] IOrderService service) =>
+        {
+            var data = await service.GetByRoomAsync(roomId);
+            return Results.Ok(ApiResponse.Success(data));
+        });
+        group.MapGet("/table/{tableId:guid}", async (Guid tableId, [FromServices] IOrderService service) =>
+        {
+            var data = await service.GetByTableAsync(tableId);
+            return Results.Ok(ApiResponse.Success(data));
         });
 
         group.MapPost("/", async (CreateOrderDto dto, [FromServices] IOrderService service) =>

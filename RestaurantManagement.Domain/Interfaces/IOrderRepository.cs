@@ -4,6 +4,8 @@ namespace RestaurantManagement.Domain.Interfaces;
 public interface IOrderRepository
 {
     Task<IEnumerable<Order>> GetAllAsync(Guid restaurantId);
+    Task<IEnumerable<Order>> GetByRoomAsync(Guid roomid);
+    Task<IEnumerable<Order>> GetByTableAsync(Guid tableId);
     Task<Order?> GetByIdAsync(Guid id);
     Task<Order> AddAsync(Order entity);
     Task<bool> UpdateAsync(Order entity);

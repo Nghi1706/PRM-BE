@@ -14,6 +14,14 @@ public class OrderRepository : IOrderRepository
         => await _context.Orders
             .Where(o => o.RestaurantId == restaurantId)
             .ToListAsync();
+    public async Task<IEnumerable<Order>> GetByRoomAsync(Guid roomId)
+        => await _context.Orders
+            .Where(o => o.RoomId == roomId)
+            .ToListAsync();
+    public async Task<IEnumerable<Order>> GetByTableAsync(Guid tableId)
+        => await _context.Orders
+            .Where(o => o.TableId == tableId)
+            .ToListAsync();
 
     public async Task<Order?> GetByIdAsync(Guid id)
         => await _context.Orders.FindAsync(id);
