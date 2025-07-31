@@ -5,29 +5,33 @@ using System.Text;
 using RestaurantManagement.Application.DTOs;
 using RestaurantManagement.Domain.Interfaces;
 using RestaurantManagement.Domain.Entities;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using RestaurantManagement.Application.Settings;
 
-
+namespace RestaurantManagement.Application.Services;
 
 public class AuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
-    private readonly string _jwtKey;
-    private readonly string _jwtIssuer;
+    private readonly JwtSettings _jwtSettings;
 
-    public AuthService(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository, IConfiguration config)
+    public AuthService(
+        IUserRepository userRepository, 
+        IRefreshTokenRepository refreshTokenRepository, 
+        IOptions<JwtSettings> jwtSettings)
     {
         _userRepository = userRepository;
         _refreshTokenRepository = refreshTokenRepository;
-        _jwtKey = config["Jwt:Key"] ?? "prm1706-Shen1706-Restaurant-1234";
-        _jwtIssuer = config["Jwt:Issuer"] ?? "Restaurantmanagement";
+        _jwtSettings = jwtSettings.Value;
     }
 
     public async Task<(string accessToken, string refreshToken)?> LoginAsync(LoginDto dto)
     {
         var user = (await _userRepository.GetAllAsync())
-.FirstOrDefault(u => u.Email == dto.Email && BCrypt.Net.BCrypt.Verify(dto.Password, u.HashedPW) && u.IsActive == true);
+            .FirstOrDefault(u => u.Email == dto.Email && 
+                          BCrypt.Net.BCrypt.Verify(dto.Password, u.HashedPW) && 
+                          u.IsActive == true);
 
         if (user == null) return null;
 
@@ -39,26 +43,26 @@ public class AuthService
             new Claim(ClaimTypes.Role, user.RoleId.ToString())
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var accessToken = new JwtSecurityToken(
-            issuer: _jwtIssuer,
-            audience: null,
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(12),
+            expires: DateTime.UtcNow.AddHours(_jwtSettings.AccessTokenExpiryHours),
             signingCredentials: creds
         );
 
         var accessTokenString = new JwtSecurityTokenHandler().WriteToken(accessToken);
 
-        // T?o refresh token
+        // Create refresh token
         var refreshToken = Guid.NewGuid().ToString();
         await _refreshTokenRepository.SaveAsync(new RefreshToken
         {
             UserId = user.Id,
             Token = refreshToken,
-            ExpiresAt = DateTime.UtcNow.AddDays(7),
+            ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays),
             Revoked = false
         });
 
@@ -82,14 +86,14 @@ public class AuthService
             new Claim(ClaimTypes.Role, user.RoleId.ToString())
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var accessToken = new JwtSecurityToken(
-            issuer: _jwtIssuer,
-            audience: null,
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(12),
+            expires: DateTime.UtcNow.AddHours(_jwtSettings.AccessTokenExpiryHours),
             signingCredentials: creds
         );
 

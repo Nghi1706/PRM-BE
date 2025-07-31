@@ -21,11 +21,13 @@ public static class OrderDetailEndpoints
                 : Results.NotFound(ApiResponse.Fail("OrderDetail not found"));
         });
 
-        group.MapPost("/", async (CreateOrderDetailDto dto, [FromServices] IOrderDetailService service) =>
+        group.MapPost("/", async (List<CreateOrderDetailDto> dtos, [FromServices] IOrderDetailService service) =>
         {
-            var created = await service.CreateAsync(dto);
-            return Results.Created($"api/orderdetails/{created.Id}", ApiResponse.Success(created));
+            var created = await service.CreateAsync(dtos);
+            return Results.Created($"api/orderdetails/", ApiResponse.Success(created));
         });
+
+
 
         group.MapPut("/{id:guid}", async (Guid id, UpdateOrderDetailDto dto, [FromServices] IOrderDetailService service) =>
         {

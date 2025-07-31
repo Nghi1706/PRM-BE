@@ -20,21 +20,27 @@ public class OrderDetailService : IOrderDetailService
     public async Task<OrderDetailDto?> GetByIdAsync(Guid id)
         => Map(await _repo.GetByIdAsync(id));
 
-    public async Task<OrderDetailDto> CreateAsync(CreateOrderDetailDto dto)
+    public async Task<IEnumerable<OrderDetailDto>> CreateAsync(List<CreateOrderDetailDto> dtos)
     {
-        var entity = new OrderDetail
+        var entities = new List<OrderDetail>();
+        foreach (var dto in dtos)
         {
-            Id = Guid.NewGuid(),
-            OrderId = dto.OrderId,
-            DishId = dto.DishId,
-            Quantity = dto.Quantity,
-            Price = dto.Price,
-            StatusId = dto.StatusId,
-            CreatedAt = DateTime.UtcNow,
-            CreatedByUser = dto.CreatedByUser
-        };
-        await _repo.AddAsync(entity);
-        return Map(entity);
+            var entity = new OrderDetail
+            {
+                Id = Guid.NewGuid(),
+                OrderId = dto.OrderId,
+                DishId = dto.DishId,
+                Quantity = dto.Quantity,
+                Price = dto.Price,
+                DishStatusId = dto.DishStatusId,
+                CreatedAt = DateTime.UtcNow,
+                CreatedByUser = dto.CreatedByUser
+            };
+            await _repo.AddAsync(entity);
+            entities.Add(entity);
+
+        }
+        return entities.Select(Map);
     }
 
     public async Task<bool> UpdateAsync(Guid id, UpdateOrderDetailDto dto)
@@ -43,7 +49,7 @@ public class OrderDetailService : IOrderDetailService
         if (entity == null) return false;
         entity.Quantity = dto.Quantity ?? entity.Quantity;
         entity.Price = dto.Price ?? entity.Price;
-        entity.StatusId = dto.StatusId ?? entity.StatusId;
+        entity.DishStatusId = dto.DishStatusId ?? entity.DishStatusId;
         entity.UpdatedAt = dto.UpdatedAt ?? DateTime.UtcNow;
         entity.UpdatedByUser = dto.UpdatedByUser ?? entity.UpdatedByUser;
         await _repo.UpdateAsync(entity);
@@ -58,9 +64,11 @@ public class OrderDetailService : IOrderDetailService
         Id = entity.Id,
         OrderId = entity.OrderId,
         DishId = entity.DishId,
+        DishName = entity.DishName,
         Quantity = entity.Quantity,
         Price = entity.Price,
-        StatusId = entity.StatusId,
+        DishStatusId = entity.DishStatusId,
+        DishStatusName = entity.DishStatusName,
         CreatedAt = entity.CreatedAt,
         CreatedByUser = entity.CreatedByUser,
         UpdatedAt = entity.UpdatedAt,

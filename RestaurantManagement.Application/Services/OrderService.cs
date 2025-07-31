@@ -18,7 +18,17 @@ public class OrderService : IOrderService
         => (await _repo.GetAllAsync(restaurantId)).Select(Map);
 
     public async Task<OrderDto?> GetByIdAsync(Guid id)
-        => Map(await _repo.GetByIdAsync(id));
+    {
+        var entity = await _repo.GetByIdAsync(id);
+        if (entity == null) return null;
+        return Map(entity);
+    }
+
+    public async Task<IEnumerable<OrderDto>> GetByRoomAsync(Guid roomId)
+        => (await _repo.GetByRoomAsync(roomId)).Select(Map);
+
+    public async Task<IEnumerable<OrderDto>> GetByTableAsync(Guid tableId)
+        => (await _repo.GetByTableAsync(tableId)).Select(Map);
 
     public async Task<OrderDto> CreateAsync(CreateOrderDto dto)
     {
@@ -29,7 +39,7 @@ public class OrderService : IOrderService
             TableId = dto.TableId,
             RoomId = dto.RoomId,
             UserId = dto.UserId,
-            StatusId = dto.StatusId,
+            OrderStatusId = dto.OrderStatusId,
             TotalAmount = dto.TotalAmount,
             CreatedAt = DateTime.UtcNow,
             CreatedByUser = dto.CreatedByUser
@@ -42,7 +52,7 @@ public class OrderService : IOrderService
     {
         var entity = await _repo.GetByIdAsync(id);
         if (entity == null) return false;
-        entity.StatusId = dto.StatusId ?? entity.StatusId;
+        entity.OrderStatusId = dto.OrderStatusId ?? entity.OrderStatusId;
         entity.TotalAmount = dto.TotalAmount ?? entity.TotalAmount;
         entity.UpdatedAt = dto.UpdatedAt ?? DateTime.UtcNow;
         entity.UpdatedByUser = dto.UpdatedByUser ?? entity.UpdatedByUser;
@@ -60,7 +70,7 @@ public class OrderService : IOrderService
         TableId = entity.TableId,
         RoomId = entity.RoomId,
         UserId = entity.UserId,
-        StatusId = entity.StatusId,
+        OrderStatusId = entity.OrderStatusId,
         TotalAmount = entity.TotalAmount,
         CreatedAt = entity.CreatedAt,
         CreatedByUser = entity.CreatedByUser,

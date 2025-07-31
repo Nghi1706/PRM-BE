@@ -23,6 +23,9 @@ namespace RestaurantManagement.Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<TableSession> TableSessions { get; set; }
+        public DbSet<TableStatusType> TableStatusTypes { get; set; }
+        public DbSet<OrderStatusType> OrderStatusTypes { get; set; }
+        public DbSet<DishStatusType> DishStatusTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +42,9 @@ namespace RestaurantManagement.Infrastructure.Data
             modelBuilder.Entity<Order>().ToTable("Orders");
             modelBuilder.Entity<OrderDetail>().ToTable("OrderDetails");
             modelBuilder.Entity<TableSession>().ToTable("TableSessions");
+            modelBuilder.Entity<TableStatusType>().ToTable("TableStatusTypes");
+            modelBuilder.Entity<OrderStatusType>().ToTable("OrderStatusTypes");
+            modelBuilder.Entity<DishStatusType>().ToTable("DishStatusTypes");
 
             base.OnModelCreating(modelBuilder);
 

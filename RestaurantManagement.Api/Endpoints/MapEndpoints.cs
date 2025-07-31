@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Routing;
+    using Microsoft.AspNetCore.Routing;
 
 namespace RestaurantManagement.Api.Endpoints;
 
@@ -9,34 +9,38 @@ public static class MapEndpoints
     {
         group.MapGet("/health", () => Results.Ok("Healthy"));
         // status categories endpoint
-        group.MapGroup("/statuscategories").MapStatusCategoryEndpoints();
+        group.MapGroup("/statuscategories").RequireAuthorization().MapStatusCategoryEndpoints();
         // status endpoint
-        group.MapGroup("/statuses").MapStatusEndpoints();
+        group.MapGroup("/statuses").RequireAuthorization().MapStatusEndpoints();
         // restaurant endpoint
-        group.MapGroup("/restaurants").MapRestaurantEndpoints();
+        group.MapGroup("/restaurants").RequireAuthorization().MapRestaurantEndpoints();
         // role endpoint
-        group.MapGroup("/roles").MapRoleEndpoints();
+        group.MapGroup("/roles").RequireAuthorization().MapRoleEndpoints();
         // user endpoint
-        group.MapGroup("/users").MapUserEndpoints();
+        group.MapGroup("/users").RequireAuthorization().MapUserEndpoints();
         // auth endpoint
         group.MapGroup("/auth").MapAuthEndpoints();
         // room endpoint
         group.MapGroup("/rooms").MapRoomEndpoints();
         // table endpoint
-        group.MapGroup("/tables").MapTableEndpoints();
+        group.MapGroup("/tables").RequireAuthorization().MapTableEndpoints();
         // category endpoint
-        group.MapGroup("/categories").MapCategoryEndpoints();
+        group.MapGroup("/categories").RequireAuthorization().MapCategoryEndpoints();
         // dish endpoint
-        group.MapGroup("/dishes").MapDishEndpoints();
+        group.MapGroup("/dishes").RequireAuthorization().MapDishEndpoints();
         // order endpoint
         group.MapGroup("/orders").MapOrderEndpoints();
         // order detail endpoint
         group.MapGroup("/orderdetails").MapOrderDetailEndpoints();
         // table session endpoint
         group.MapGroup("/tablesessions").MapTableSessionEndpoints();
+        // table status type endpoint
+        group.MapGroup("/tablestatustypes").RequireAuthorization().MapTableStatusTypeEndpoints();
+        // order status type endpoint
+        group.MapGroup("/orderstatustypes").RequireAuthorization().MapOrderStatusTypeEndpoints();
+        // dish status type endpoint
+        group.MapGroup("/dishstatustypes").RequireAuthorization().MapDishStatusTypeEndpoints();
 
-        // Các group khác:
-        // group.MapGroup("/orders").MapOrderEndpoints();
 
         return group;
     }

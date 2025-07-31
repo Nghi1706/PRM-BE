@@ -7,7 +7,7 @@ public class Order
     public Guid TableId { get; set; }
     public Guid RoomId { get; set; }
     public Guid? UserId { get; set; }
-    public Guid StatusId { get; set; }
+    public int OrderStatusId { get; set; }
     public decimal? TotalAmount { get; set; }
     public DateTime CreatedAt { get; set; }
     public Guid? CreatedByUser { get; set; }
