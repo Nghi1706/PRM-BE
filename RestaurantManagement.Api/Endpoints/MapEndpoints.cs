@@ -1,4 +1,4 @@
-    using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing;
 
 namespace RestaurantManagement.Api.Endpoints;
 
@@ -44,4 +44,4 @@ public static class MapEndpoints
 
         return group;
     }
-}       
+}

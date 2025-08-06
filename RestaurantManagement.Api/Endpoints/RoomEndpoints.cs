@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantManagement.Application.Interfaces;
 using RestaurantManagement.Application.DTOs;
+using RestaurantManagement.Shared.Response;
+
+namespace RestaurantManagement.Api.Endpoints;
 
 public static class RoomEndpoints
 {
@@ -9,37 +12,60 @@ public static class RoomEndpoints
         group.MapGet("/", async ([FromQuery] Guid restaurantId, [FromServices] IRoomService service) =>
         {
             var data = await service.GetAllAsync(restaurantId);
-            return Results.Ok(ApiResponse.Success(data));
+            var response = ApiResponse.Success(data);
+            return Results.Json(response, statusCode: response.StatusCode);
         });
 
         group.MapGet("/{id:guid}", async (Guid id, [FromServices] IRoomService service) =>
         {
             var room = await service.GetByIdAsync(id);
-            return room != null
-                ? Results.Ok(ApiResponse.Success(room))
-                : Results.NotFound(ApiResponse.Fail("Không tìm thấy phòng"));
+            if (room != null)
+            {
+                var response = ApiResponse.Success(room);
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("Không tìm thấy phòng");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         group.MapPost("/", async (CreateRoomDto dto, [FromServices] IRoomService service) =>
         {
             var created = await service.CreateAsync(dto);
-            return Results.Created($"api/rooms/{created.Id}", ApiResponse.Success(created));
+            var response = ApiResponse.Created(created);
+            return Results.Json(response, statusCode: response.StatusCode);
         });
 
         group.MapPut("/{id:guid}", async (Guid id, UpdateRoomDto dto, [FromServices] IRoomService service) =>
         {
             var updated = await service.UpdateAsync(id, dto);
-            return updated
-                ? Results.Ok(ApiResponse.Success("Updated successfully"))
-                : Results.NotFound(ApiResponse.Fail("Room not found"));
+            if (updated)
+            {
+                var response = ApiResponse.Success(null, "Updated successfully");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("Room not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         group.MapDelete("/{id:guid}", async (Guid id, [FromServices] IRoomService service) =>
         {
             var deleted = await service.DeleteAsync(id);
-            return deleted
-                ? Results.Ok(ApiResponse.Success("Deleted successfully"))
-                : Results.NotFound(ApiResponse.Fail("Room not found"));
+            if (deleted)
+            {
+                var response = ApiResponse.Success(null, "Deleted successfully");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("Room not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         return group;
