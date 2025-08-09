@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using RestaurantManagement.Application.Interfaces;
 using RestaurantManagement.Application.DTOs;
+using RestaurantManagement.Shared.Response;
 
 namespace RestaurantManagement.Api.Endpoints;
+
 public static class OrderDetailEndpoints
 {
     public static RouteGroupBuilder MapOrderDetailEndpoints(this RouteGroupBuilder group)
@@ -10,39 +12,60 @@ public static class OrderDetailEndpoints
         group.MapGet("/", async ([FromQuery] Guid orderId, [FromServices] IOrderDetailService service) =>
         {
             var data = await service.GetAllAsync(orderId);
-            return Results.Ok(ApiResponse.Success(data));
+            var response = ApiResponse.Success(data);
+            return Results.Json(response, statusCode: response.StatusCode);
         });
 
         group.MapGet("/{id:guid}", async (Guid id, [FromServices] IOrderDetailService service) =>
         {
             var detail = await service.GetByIdAsync(id);
-            return detail != null
-                ? Results.Ok(ApiResponse.Success(detail))
-                : Results.NotFound(ApiResponse.Fail("OrderDetail not found"));
+            if (detail != null)
+            {
+                var response = ApiResponse.Success(detail);
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("OrderDetail not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         group.MapPost("/", async (List<CreateOrderDetailDto> dtos, [FromServices] IOrderDetailService service) =>
         {
             var created = await service.CreateAsync(dtos);
-            return Results.Created($"api/orderdetails/", ApiResponse.Success(created));
+            var response = ApiResponse.Created(created);
+            return Results.Json(response, statusCode: response.StatusCode);
         });
-
-
 
         group.MapPut("/{id:guid}", async (Guid id, UpdateOrderDetailDto dto, [FromServices] IOrderDetailService service) =>
         {
             var updated = await service.UpdateAsync(id, dto);
-            return updated
-                ? Results.Ok(ApiResponse.Success("Updated successfully"))
-                : Results.NotFound(ApiResponse.Fail("OrderDetail not found"));
+            if (updated)
+            {
+                var response = ApiResponse.Success(null, "Updated successfully");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("OrderDetail not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         group.MapDelete("/{id:guid}", async (Guid id, [FromServices] IOrderDetailService service) =>
         {
             var deleted = await service.DeleteAsync(id);
-            return deleted
-                ? Results.Ok(ApiResponse.Success("Deleted successfully"))
-                : Results.NotFound(ApiResponse.Fail("OrderDetail not found"));
+            if (deleted)
+            {
+                var response = ApiResponse.Success(null, "Deleted successfully");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("OrderDetail not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         return group;

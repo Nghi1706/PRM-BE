@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantManagement.Application.Interfaces;
 using RestaurantManagement.Application.DTOs;
+using RestaurantManagement.Shared.Response;
+
+namespace RestaurantManagement.Api.Endpoints;
 
 public static class OrderStatusTypeEndpoints
 {
@@ -9,37 +12,60 @@ public static class OrderStatusTypeEndpoints
         group.MapGet("/", async ([FromServices] IOrderStatusTypeService service) =>
         {
             var data = await service.GetAllAsync();
-            return Results.Ok(ApiResponse.Success(data));
+            var response = ApiResponse.Success(data);
+            return Results.Json(response, statusCode: response.StatusCode);
         });
 
         group.MapGet("/{id:int}", async (int id, [FromServices] IOrderStatusTypeService service) =>
         {
             var item = await service.GetByIdAsync(id);
-            return item != null
-                ? Results.Ok(ApiResponse.Success(item))
-                : Results.NotFound(ApiResponse.Fail("Không tìm thấy trạng thái order"));
+            if (item != null)
+            {
+                var response = ApiResponse.Success(item);
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("Không tìm thấy trạng thái order");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         group.MapPost("/", async (CreateOrderStatusTypeDto dto, [FromServices] IOrderStatusTypeService service) =>
         {
             var created = await service.CreateAsync(dto);
-            return Results.Created($"/api/Orderstatustypes/{created.Id}", ApiResponse.Success(created));
+            var response = ApiResponse.Created(created);
+            return Results.Json(response, statusCode: response.StatusCode);
         });
 
         group.MapPut("/{id:int}", async (int id, UpdateOrderStatusTypeDto dto, [FromServices] IOrderStatusTypeService service) =>
         {
             var updated = await service.UpdateAsync(id, dto);
-            return updated
-                ? Results.Ok(ApiResponse.Success("Updated successfully"))
-                : Results.NotFound(ApiResponse.Fail("OrderStatusType not found"));
+            if (updated)
+            {
+                var response = ApiResponse.Success(null, "Updated successfully");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("OrderStatusType not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         group.MapDelete("/{id:int}", async (int id, [FromServices] IOrderStatusTypeService service) =>
         {
             var deleted = await service.DeleteAsync(id);
-            return deleted
-                ? Results.Ok(ApiResponse.Success("Deleted successfully"))
-                : Results.NotFound(ApiResponse.Fail("OrderStatusType not found"));
+            if (deleted)
+            {
+                var response = ApiResponse.Success(null, "Deleted successfully");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("OrderStatusType not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         return group;

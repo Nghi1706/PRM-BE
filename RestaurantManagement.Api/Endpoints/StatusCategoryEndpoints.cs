@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using RestaurantManagement.Application.Interfaces;
 using RestaurantManagement.Application.DTOs;
+using RestaurantManagement.Shared.Response;
+
+namespace RestaurantManagement.Api.Endpoints;
 
 public static class StatusCategoryEndpoints
 {
@@ -9,37 +12,60 @@ public static class StatusCategoryEndpoints
         group.MapGet("/", async ([FromServices] IStatusCategoryService service) =>
         {
             var data = await service.GetAllAsync();
-            return Results.Ok(ApiResponse.Success(data));
+            var response = ApiResponse.Success(data);
+            return Results.Json(response, statusCode: response.StatusCode);
         });
 
         group.MapGet("/{id:guid}", async (Guid id, [FromServices] IStatusCategoryService service) =>
         {
             var data = await service.GetByIdAsync(id);
-            return data != null
-                ? Results.Ok(ApiResponse.Success(data))
-                : Results.NotFound(ApiResponse.Fail("StatusCategory not found"));
+            if (data != null)
+            {
+                var response = ApiResponse.Success(data);
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("StatusCategory not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         group.MapPost("/", async (CreateStatusCategoryDto dto, [FromServices] IStatusCategoryService service) =>
         {
             var created = await service.CreateAsync(dto);
-            return Results.Created($"/api/v1/statuscategories/{created.Id}", ApiResponse.Success(created));
+            var response = ApiResponse.Created(created);
+            return Results.Json(response, statusCode: response.StatusCode);
         });
 
         group.MapPut("/{id:guid}", async (Guid id, UpdateStatusCategoryDto dto, [FromServices] IStatusCategoryService service) =>
         {
             var updated = await service.UpdateAsync(id, dto);
-            return updated
-                ? Results.Ok(ApiResponse.Success("Updated successfully"))
-                : Results.NotFound(ApiResponse.Fail("StatusCategory not found"));
+            if (updated)
+            {
+                var response = ApiResponse.Success(null, "Updated successfully");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("StatusCategory not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         group.MapDelete("/{id:guid}", async (Guid id, [FromServices] IStatusCategoryService service) =>
         {
             var deleted = await service.DeleteAsync(id);
-            return deleted
-                ? Results.Ok(ApiResponse.Success("Deleted successfully"))
-                : Results.NotFound(ApiResponse.Fail("StatusCategory not found"));
+            if (deleted)
+            {
+                var response = ApiResponse.Success(null, "Deleted successfully");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
+            else
+            {
+                var response = ApiResponse.NotFound("StatusCategory not found");
+                return Results.Json(response, statusCode: response.StatusCode);
+            }
         });
 
         return group;
