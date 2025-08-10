@@ -1,0 +1,78 @@
+# =========================
+# Build output
+# =========================
+bin/
+obj/
+out/
+[Bb]uild/
+[Ll]og/
+
+# =========================
+# User-specific files
+# =========================
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.userprefs
+*.rsuser
+
+# =========================
+# IDE settings (VS / VS Code)
+# =========================
+.vscode/
+.idea/
+*.sln.iml
+
+# =========================
+# ASP.NET temporary files
+# =========================
+**/wwwroot/lib/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Cache & temp
+# =========================
+*.pid
+*.seed
+*.tmp
+*.temp
+*.log
+*.tlog
+.DS_Store
+Thumbs.db
+
+# =========================
+# NuGet & packages
+# =========================
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# =========================
+# Test results
+# =========================
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# =========================
+# EF Core migrations snapshot
+# =========================
+*Migrations/*.Designer.cs
+
+# =========================
+# Secrets / environment
+# =========================
+.env
+.env.*
+appsettings.*.json
+!appsettings.json  # giữ file config default
