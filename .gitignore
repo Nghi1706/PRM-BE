@@ -21,6 +21,7 @@ out/
 # IDE settings (VS / VS Code)
 # =========================
 .vscode/
+.vs/
 .idea/
 *.sln.iml
 
