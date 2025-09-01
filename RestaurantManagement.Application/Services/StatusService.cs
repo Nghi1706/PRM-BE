@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,86 +8,136 @@ using RestaurantManagement.Application.DTOs;
 using RestaurantManagement.Shared.Logging;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using RestaurantManagement.Application.Common;
 
 namespace RestaurantManagement.Application.Services;
 
 public class StatusService : IStatusService
 {
-    private readonly IStatusRepository _repository;
+    private readonly IStatusRepository _statusRepository;
 
-    private readonly ILogger<StatusService> _logger;
-
-    public StatusService(IStatusRepository repository, ILogger<StatusService> logger)
+    public StatusService(IStatusRepository statusRepository)
     {
-        _logger = logger ?? AppLogger<StatusService>.Instance;
-
-        _repository = repository;
+        _statusRepository = statusRepository;
     }
 
-    public async Task<IEnumerable<StatusDto>> GetAllAsync()
+    public async Task<ServiceResponse<IEnumerable<StatusDto>>> GetAllAsync()
     {
-        var entities = await _repository.GetAllAsync();
-        var json = JsonConvert.SerializeObject(entities, Formatting.Indented);
-        _logger.LogInformation(json);
-        return entities.Select(e => new StatusDto
+        try
         {
-            Id = e.Id,
-            Name = e.Name,
-            Code = e.Code,
-            CategoryId = e.CategoryId,
-            Description = e.Description ?? string.Empty,
-            IsActive = e.IsActive ?? false,
-        });
-    }
+            var statuses = await _statusRepository.GetAllAsync();
+            var statusDtos = statuses.Select(status => new StatusDto
+            {
+                M02Id = status.M02Id,
+                M02Name = status.M02Name,
+                M02ForTable = status.M02ForTable,
+                M02IsActive = status.M02IsActive
+            }).ToList();
 
-
-    public async Task<StatusDto> CreateAsync(CreateStatusDto dto)
-    {
-        var entity = new Status
+            return ServiceResponse<IEnumerable<StatusDto>>.Success(statusDtos);
+        }
+        catch (Exception ex)
         {
-            CategoryId = dto.CategoryId,
-            Name = dto.Name,
-            Code = dto.Code,
-            Description = dto.Description ?? string.Empty,
-            IsActive = dto.IsActive ?? true,
-            CreatedByUser = dto.CreatedByUser,
-        };
+            return ServiceResponse<IEnumerable<StatusDto>>.Error($"Error retrieving statuses: {ex.Message}");
+        }
+    }
 
-        await _repository.AddAsync(entity);
-
-        return new StatusDto
+    public async Task<ServiceResponse<StatusDto>> GetByIdAsync(int id)
+    {
+        try
         {
-            Id = entity.Id,
-            Code = entity.Code,
-            Description = entity.Description ?? string.Empty,
-            CategoryId = entity.CategoryId,
-            Name = entity.Name,
-            IsActive = entity.IsActive ?? true
-        };
+            var status = await _statusRepository.GetByIdAsync(id);
+            if (status == null)
+            {
+                return ServiceResponse<StatusDto>.NotFound("Status not found");
+            }
+
+            var statusDto = new StatusDto
+            {
+                M02Id = status.M02Id,
+                M02Name = status.M02Name,
+                M02ForTable = status.M02ForTable,
+                M02IsActive = status.M02IsActive
+            };
+
+            return ServiceResponse<StatusDto>.Success(statusDto);
+        }
+        catch (Exception ex)
+        {
+            return ServiceResponse<StatusDto>.Error($"Error retrieving status: {ex.Message}");
+        }
     }
 
-    public async Task<bool> UpdateAsync(Guid id, UpdateStatusDto dto)
+    public async Task<ServiceResponse<StatusDto>> CreateAsync(CreateStatusDto dto)
     {
-        var entity = await _repository.GetByIdAsync(id);
-        if (entity == null) return false;
+        try
+        {
+            var status = new Status
+            {
+                M02Name = dto.M02Name,
+                M02ForTable = dto.M02ForTable,
+                M02IsActive = dto.M02IsActive
+            };
 
-        entity.Update(
-            name: dto.Name,
-            description: dto.Description,
-            isActive: dto.IsActive,
-            updatedBy: dto.UpdatedByUser
-        );
+            await _statusRepository.AddAsync(status);
 
-        await _repository.UpdateAsync(entity);
-        return true;
+            var statusDto = new StatusDto
+            {
+                M02Id = status.M02Id,
+                M02Name = status.M02Name,
+                M02ForTable = status.M02ForTable,
+                M02IsActive = status.M02IsActive
+            };
+
+            return ServiceResponse<StatusDto>.Created(statusDto, "Status created successfully");
+        }
+        catch (Exception ex)
+        {
+            return ServiceResponse<StatusDto>.Error($"Error creating status: {ex.Message}");
+        }
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
+    public async Task<ServiceResponse<object>> UpdateAsync(int id, UpdateStatusDto dto)
     {
-        var entity = await _repository.GetByIdAsync(id);
-        if (entity == null) return false;
+        try
+        {
+            var status = await _statusRepository.GetByIdAsync(id);
+            if (status == null)
+            {
+                return ServiceResponse<object>.NotFound("Status not found");
+            }
 
-        await _repository.DeleteAsync(id);
-        return true;
+            status.M02Name = dto.M02Name ?? status.M02Name;
+            status.M02ForTable = dto.M02ForTable ?? status.M02ForTable;
+            status.M02IsActive = dto.M02IsActive ?? status.M02IsActive;
+
+            await _statusRepository.UpdateAsync(status);
+
+            return ServiceResponse<object>.Success(null, "Status updated successfully");
+        }
+        catch (Exception ex)
+        {
+            return ServiceResponse<object>.Error($"Error updating status: {ex.Message}");
+        }
+    }
+
+    public async Task<ServiceResponse<object>> DeleteAsync(int id)
+    {
+        try
+        {
+            var status = await _statusRepository.GetByIdAsync(id);
+            if (status == null)
+            {
+                return ServiceResponse<object>.NotFound("Status not found");
+            }
+
+            await _statusRepository.DeleteAsync(status.M02Id);
+
+            return ServiceResponse<object>.Success(null, "Status deleted successfully");
+        }
+        catch (Exception ex)
+        {
+            return ServiceResponse<object>.Error($"Error deleting status: {ex.Message}");
+        }
     }
 }

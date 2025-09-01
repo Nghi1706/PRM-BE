@@ -17,7 +17,7 @@ public class StatusRepository : IStatusRepository
     public async Task<IEnumerable<Status>> GetAllAsync()
         => await _context.Status.ToListAsync();
 
-    public async Task<Status?> GetByIdAsync(Guid id)
+    public async Task<Status?> GetByIdAsync(int id)
         => await _context.Status.FindAsync(id);
 
     public async Task AddAsync(Status entity)
@@ -32,12 +32,13 @@ public class StatusRepository : IStatusRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
+    public async Task<bool> DeleteAsync(int id)
     {
         var entity = await _context.Status.FindAsync(id);
         if (entity == null) return false;
-        entity.IsActive = false;
 
+        // Soft delete
+        entity.M02IsActive = false;
         _context.Status.Update(entity);
         await _context.SaveChangesAsync();
         return true;

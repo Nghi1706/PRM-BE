@@ -5,8 +5,8 @@ namespace RestaurantManagement.Domain.Interfaces;
 public interface IStatusRepository
 {
     Task<IEnumerable<Status>> GetAllAsync();
-    Task<Status> GetByIdAsync(Guid id);
+    Task<Status?> GetByIdAsync(int id);
     Task AddAsync(Status entity);
     Task UpdateAsync(Status entity);
-    Task<bool> DeleteAsync(Guid id);
+    Task<bool> DeleteAsync(int id);
 }

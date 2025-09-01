@@ -1,25 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace RestaurantManagement.Domain.Entities;
 
+[Table("status")]
 public class Status
 {
-    public Guid Id { get; set; }
+    [Column("m02_id")]
+    [Key]
+    public int M02Id { get; set; }
 
-    public Guid CategoryId { get; set; }
-    public required string Name { get; set; }
-    public required int Code { get; set; }
-    public string? Description { get; set; }
-    public bool? IsActive { get; set; } = true;
-    public DateTime? CreatedAt { get; set; }
-    public Guid? CreatedByUser { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-    public Guid? UpdatedByUser { get; set; }
+    [Column("m02_name")]
+    public required string M02Name { get; set; }
 
-    public void Update(string? name, string? description, bool? isActive, Guid? updatedBy)
-    {
-        if (name != null) Name = name;
-        if (description != null) Description = description;
-        if (isActive.HasValue) IsActive = isActive.Value;
-        if (updatedBy.HasValue) UpdatedByUser = updatedBy.Value;
-    }
+    [Column("m02_for_table")]
+    public required string M02ForTable { get; set; }
 
+    [Column("m02_is_active")]
+    public bool M02IsActive { get; set; } = true;
 }

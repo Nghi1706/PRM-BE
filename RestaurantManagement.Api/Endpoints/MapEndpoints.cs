@@ -9,25 +9,25 @@ public static class MapEndpoints
     {
         group.MapGet("/health", () => Results.Ok("Healthy"));
         // status categories endpoint
-        group.MapGroup("/statuscategories").RequireAuthorization().MapStatusCategoryEndpoints();
+        group.MapGroup("/statuscategories").MapStatusCategoryEndpoints();
         // status endpoint
-        group.MapGroup("/statuses").RequireAuthorization().MapStatusEndpoints();
+        group.MapGroup("/status").MapStatusEndpoints();
         // restaurant endpoint
-        group.MapGroup("/restaurants").RequireAuthorization().MapRestaurantEndpoints();
+        group.MapGroup("/restaurants").MapRestaurantEndpoints();
         // roles endpoint
         group.MapGroup("/roles").MapRolesEndpoints();
         // user endpoint
-        group.MapGroup("/users").RequireAuthorization().MapUserEndpoints();
+        group.MapGroup("/users").MapUserEndpoints();
         // auth endpoint
         group.MapGroup("/auth").MapAuthEndpoints();
         // room endpoint
         group.MapGroup("/rooms").MapRoomEndpoints();
         // table endpoint
-        group.MapGroup("/tables").RequireAuthorization().MapTableEndpoints();
+        group.MapGroup("/tables").MapTableEndpoints();
         // category endpoint
-        group.MapGroup("/categories").RequireAuthorization().MapCategoryEndpoints();
+        group.MapGroup("/categories").MapCategoryEndpoints();
         // dish endpoint
-        group.MapGroup("/dishes").RequireAuthorization().MapDishEndpoints();
+        group.MapGroup("/dishes").MapDishEndpoints();
         // order endpoint
         group.MapGroup("/orders").MapOrderEndpoints();
         // order detail endpoint
@@ -35,11 +35,11 @@ public static class MapEndpoints
         // table session endpoint
         group.MapGroup("/tablesessions").MapTableSessionEndpoints();
         // table status type endpoint
-        group.MapGroup("/tablestatustypes").RequireAuthorization().MapTableStatusTypeEndpoints();
+        group.MapGroup("/tablestatustypes").MapTableStatusTypeEndpoints();
         // order status type endpoint
-        group.MapGroup("/orderstatustypes").RequireAuthorization().MapOrderStatusTypeEndpoints();
+        group.MapGroup("/orderstatustypes").MapOrderStatusTypeEndpoints();
         // dish status type endpoint
-        group.MapGroup("/dishstatustypes").RequireAuthorization().MapDishStatusTypeEndpoints();
+        group.MapGroup("/dishstatustypes").MapDishStatusTypeEndpoints();
 
 
         return group;

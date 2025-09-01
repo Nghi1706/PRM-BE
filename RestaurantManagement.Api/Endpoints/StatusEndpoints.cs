@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestaurantManagement.Application.Interfaces;
 using RestaurantManagement.Application.DTOs;
-using RestaurantManagement.Shared.Response;
+using RestaurantManagement.Api.Extensions;
 
 namespace RestaurantManagement.Api.Endpoints;
 
@@ -11,46 +11,32 @@ public static class StatusEndpoints
     {
         group.MapGet("/", async ([FromServices] IStatusService service) =>
         {
-            var data = await service.GetAllAsync();
-            var response = ApiResponse.Success(data);
-            return Results.Json(response, statusCode: response.StatusCode);
+            var serviceResponse = await service.GetAllAsync();
+            return serviceResponse.ToApiResult();
+        });
+
+        group.MapGet("/{id:int}", async (int id, [FromServices] IStatusService service) =>
+        {
+            var serviceResponse = await service.GetByIdAsync(id);
+            return serviceResponse.ToApiResult();
         });
 
         group.MapPost("/", async (CreateStatusDto dto, [FromServices] IStatusService service) =>
         {
-            var created = await service.CreateAsync(dto);
-            var response = ApiResponse.Created(created);
-            return Results.Json(response, statusCode: response.StatusCode);
+            var serviceResponse = await service.CreateAsync(dto);
+            return serviceResponse.ToApiResult();
         });
 
-        group.MapPut("/{id:guid}", async (Guid id, UpdateStatusDto dto, [FromServices] IStatusService service) =>
+        group.MapPut("/{id:int}", async (int id, UpdateStatusDto dto, [FromServices] IStatusService service) =>
         {
-            var updated = await service.UpdateAsync(id, dto);
-            if (updated)
-            {
-                var response = ApiResponse.Success(null, "Updated successfully");
-                return Results.Json(response, statusCode: response.StatusCode);
-            }
-            else
-            {
-                var response = ApiResponse.NotFound("Status not found");
-                return Results.Json(response, statusCode: response.StatusCode);
-            }
+            var serviceResponse = await service.UpdateAsync(id, dto);
+            return serviceResponse.ToApiResult();
         });
 
-        group.MapDelete("/{id:guid}", async (Guid id, [FromServices] IStatusService service) =>
+        group.MapDelete("/{id:int}", async (int id, [FromServices] IStatusService service) =>
         {
-            var deleted = await service.DeleteAsync(id);
-            if (deleted)
-            {
-                var response = ApiResponse.Success(null, "Deleted successfully");
-                return Results.Json(response, statusCode: response.StatusCode);
-            }
-            else
-            {
-                var response = ApiResponse.NotFound("Status not found");
-                return Results.Json(response, statusCode: response.StatusCode);
-            }
+            var serviceResponse = await service.DeleteAsync(id);
+            return serviceResponse.ToApiResult();
         });
 
         return group;

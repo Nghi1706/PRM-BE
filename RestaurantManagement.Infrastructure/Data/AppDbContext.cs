@@ -27,7 +27,7 @@ namespace RestaurantManagement.Infrastructure.Data
         public DbSet<TableStatusType> TableStatusTypes { get; set; }
         public DbSet<OrderStatusType> OrderStatusTypes { get; set; }
         public DbSet<DishStatusType> DishStatusTypes { get; set; }
-        
+
         // v2
         public DbSet<Roles> Roles { get; set; }
 
@@ -37,7 +37,7 @@ namespace RestaurantManagement.Infrastructure.Data
         {
             // v1
             modelBuilder.Entity<StatusCategory>().ToTable("StatusCategories");
-            modelBuilder.Entity<Status>().ToTable("Statuses");
+            // modelBuilder.Entity<Status>().ToTable("Statuses");
             modelBuilder.Entity<Restaurant>().ToTable("Restaurants");
             //modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<User>().ToTable("Users");
@@ -55,6 +55,7 @@ namespace RestaurantManagement.Infrastructure.Data
 
             // v2
             modelBuilder.Entity<Roles>().ToTable("roles");
+            modelBuilder.Entity<Status>().ToTable("status");
 
 
             base.OnModelCreating(modelBuilder);

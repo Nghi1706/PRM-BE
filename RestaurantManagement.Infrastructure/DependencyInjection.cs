@@ -17,7 +17,7 @@ namespace RestaurantManagement.Infrastructure
             // v1
             services.AddScoped<IStatusCategoryRepository, StatusCategoryRepository>();
 
-            services.AddScoped<IStatusRepository, StatusRepository>();
+            // services.AddScoped<IStatusRepository, StatusRepository>();
 
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
@@ -50,6 +50,9 @@ namespace RestaurantManagement.Infrastructure
             // v2 
 
             services.AddScoped<IRolesRepository, RolesRepository>();
+            services.AddScoped<IStatusRepository, StatusRepository>();
+
+
 
             return services;
         }
