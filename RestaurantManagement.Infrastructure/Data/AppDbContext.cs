@@ -9,7 +9,7 @@ namespace RestaurantManagement.Infrastructure.Data
             : base(options) { }
 
         // v1
-        public DbSet<Restaurant> Restaurants { get; set; }
+        // public DbSet<Restaurant> Restaurants { get; set; }
 
         // status category
         public DbSet<StatusCategory> StatusCategories { get; set; }
@@ -32,6 +32,7 @@ namespace RestaurantManagement.Infrastructure.Data
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<Restaurants> Restaurants { get; set; }
 
 
 
@@ -40,7 +41,7 @@ namespace RestaurantManagement.Infrastructure.Data
             // v1
             modelBuilder.Entity<StatusCategory>().ToTable("StatusCategories");
             // modelBuilder.Entity<Status>().ToTable("Statuses");
-            modelBuilder.Entity<Restaurant>().ToTable("Restaurants");
+            // modelBuilder.Entity<Restaurant>().ToTable("Restaurants");
             //modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<RefreshToken>().ToTable("RefreshTokens");
@@ -59,6 +60,8 @@ namespace RestaurantManagement.Infrastructure.Data
             modelBuilder.Entity<Roles>().ToTable("roles");
             modelBuilder.Entity<Status>().ToTable("status");
             modelBuilder.Entity<Voucher>().ToTable("vouchers");
+            modelBuilder.Entity<Restaurants>().ToTable("Restaurants");
+
 
             base.OnModelCreating(modelBuilder);
 
