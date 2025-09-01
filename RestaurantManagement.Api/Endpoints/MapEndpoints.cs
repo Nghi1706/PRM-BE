@@ -16,6 +16,8 @@ public static class MapEndpoints
         group.MapGroup("/restaurants").MapRestaurantEndpoints();
         // roles endpoint
         group.MapGroup("/roles").MapRolesEndpoints();
+        // vouchers enpoint
+        group.MapGroup("/vouchers").MapVoucherEndpoints();
         // user endpoint
         group.MapGroup("/users").MapUserEndpoints();
         // auth endpoint

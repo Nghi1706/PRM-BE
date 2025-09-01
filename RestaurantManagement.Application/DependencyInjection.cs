@@ -9,7 +9,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IStatusCategoryService, StatusCategoryService>();
-        services.AddScoped<IStatusService, StatusService>();
+        // services.AddScoped<IStatusService, StatusService>();
         services.AddScoped<IRestaurantService, RestaurantService>();
         //services.AddScoped<IRoleServices, RoleService>();
         services.AddScoped<IUserService, UserService>();
@@ -28,6 +28,8 @@ public static class DependencyInjection
         //v2
 
         services.AddScoped<IRolesServices, RolesService>();
+        services.AddScoped<IStatusService, StatusService>();
+        services.AddScoped<IVouchersService, VouchersService>();
         return services;
     }
 }

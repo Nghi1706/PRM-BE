@@ -51,6 +51,7 @@ namespace RestaurantManagement.Infrastructure
 
             services.AddScoped<IRolesRepository, RolesRepository>();
             services.AddScoped<IStatusRepository, StatusRepository>();
+            services.AddScoped<IVoucherRepository, VoucherRepository>();
 
 
 
