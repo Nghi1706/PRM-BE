@@ -12,7 +12,7 @@ public static class DependencyInjection
         // services.AddScoped<IStatusService, StatusService>();
         // services.AddScoped<IRestaurantService, RestaurantService>();
         //services.AddScoped<IRoleServices, RoleService>();
-        services.AddScoped<IUserService, UserService>();
+        // services.AddScoped<IUserService, UserService>();
         services.AddScoped<AuthService>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<ITableService, TableService>();
@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IStatusService, StatusService>();
         services.AddScoped<IVouchersService, VouchersService>();
         services.AddScoped<IRestaurantsService, RestaurantsService>();
+        services.AddScoped<IUsersService, UsersService>();
         return services;
     }
 }

@@ -23,7 +23,7 @@ namespace RestaurantManagement.Infrastructure
 
             // services.AddScoped<IRoleRepository, RolesRepository>();
 
-            services.AddScoped<IUserRepository, UserRepository>();
+            // services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
@@ -53,6 +53,7 @@ namespace RestaurantManagement.Infrastructure
             services.AddScoped<IStatusRepository, StatusRepository>();
             services.AddScoped<IVoucherRepository, VoucherRepository>();
             services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();
+            services.AddScoped<IUsersRepository, UserRepository>();
 
 
 

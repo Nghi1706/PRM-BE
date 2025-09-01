@@ -12,12 +12,12 @@ namespace RestaurantManagement.Application.Services;
 
 public class AuthService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUsersRepository _userRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly JwtSettings _jwtSettings;
 
     public AuthService(
-        IUserRepository userRepository, 
+        IUsersRepository userRepository, 
         IRefreshTokenRepository refreshTokenRepository, 
         IOptions<JwtSettings> jwtSettings)
     {
@@ -29,18 +29,18 @@ public class AuthService
     public async Task<(string accessToken, string refreshToken)?> LoginAsync(LoginDto dto)
     {
         var user = (await _userRepository.GetAllAsync())
-            .FirstOrDefault(u => u.Email == dto.Email && 
-                          BCrypt.Net.BCrypt.Verify(dto.Password, u.HashedPW) && 
-                          u.IsActive == true);
+            .FirstOrDefault(u => u.M05Email == dto.Email && 
+                          BCrypt.Net.BCrypt.Verify(dto.Password, u.M05HashedPW) && 
+                          u.M05IsActive == true);
 
         if (user == null) return null;
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim("RestaurantId", user.RestaurantId.ToString()),
-            new Claim(ClaimTypes.Role, user.RoleId.ToString())
+            new Claim(ClaimTypes.NameIdentifier, user.M05Id.ToString()),
+            new Claim(ClaimTypes.Email, user.M05Email),
+            new Claim("RestaurantId", user.M05RestaurantId.ToString()),
+            new Claim(ClaimTypes.Role, user.M05RoleId.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
@@ -60,7 +60,7 @@ public class AuthService
         var refreshToken = Guid.NewGuid().ToString();
         await _refreshTokenRepository.SaveAsync(new RefreshToken
         {
-            UserId = user.Id,
+            UserId = user.M05Id,
             Token = refreshToken,
             ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays),
             Revoked = false
@@ -80,10 +80,10 @@ public class AuthService
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim("RestaurantId", user.RestaurantId.ToString()),
-            new Claim(ClaimTypes.Role, user.RoleId.ToString())
+            new Claim(ClaimTypes.NameIdentifier, user.M05Id.ToString()),
+            new Claim(ClaimTypes.Email, user.M05Email),
+            new Claim("RestaurantId", user.M05RestaurantId.ToString()),
+            new Claim(ClaimTypes.Role, user.M05RoleId.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
