@@ -31,4 +31,12 @@ namespace RestaurantManagement.Shared.Enums
         OutOfStock = 5,
         Cancelled = 6
     }
+    public enum UserRole
+    {
+        Host = 1,  
+        Admin = 2,
+        Employee = 3,
+        Chef = 4,
+        Customer = 5
+    }
 }

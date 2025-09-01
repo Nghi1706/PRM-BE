@@ -14,13 +14,14 @@ namespace RestaurantManagement.Infrastructure
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
+            // v1
             services.AddScoped<IStatusCategoryRepository, StatusCategoryRepository>();
 
             services.AddScoped<IStatusRepository, StatusRepository>();
 
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
-            
-            services.AddScoped<IRoleRepository, RoleRepository>();
+
+            // services.AddScoped<IRoleRepository, RolesRepository>();
 
             services.AddScoped<IUserRepository, UserRepository>();
 
@@ -45,6 +46,10 @@ namespace RestaurantManagement.Infrastructure
             services.AddScoped<IOrderStatusTypeRepository, OrderStatusTypeRepository>();
 
             services.AddScoped<IDishStatusTypeRepository, DishStatusTypeRepository>();
+
+            // v2 
+
+            services.AddScoped<IRolesRepository, RolesRepository>();
 
             return services;
         }

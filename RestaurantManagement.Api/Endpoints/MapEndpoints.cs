@@ -14,8 +14,8 @@ public static class MapEndpoints
         group.MapGroup("/statuses").RequireAuthorization().MapStatusEndpoints();
         // restaurant endpoint
         group.MapGroup("/restaurants").RequireAuthorization().MapRestaurantEndpoints();
-        // role endpoint
-        group.MapGroup("/roles").RequireAuthorization().MapRoleEndpoints();
+        // roles endpoint
+        group.MapGroup("/roles").MapRolesEndpoints();
         // user endpoint
         group.MapGroup("/users").RequireAuthorization().MapUserEndpoints();
         // auth endpoint
