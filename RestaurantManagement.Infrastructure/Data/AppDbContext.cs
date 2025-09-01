@@ -19,7 +19,7 @@ namespace RestaurantManagement.Infrastructure.Data
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Table> Tables { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        // public DbSet<Category> Categories { get; set; }
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
@@ -34,6 +34,7 @@ namespace RestaurantManagement.Infrastructure.Data
         public DbSet<Voucher> Vouchers { get; set; }
         public DbSet<Restaurants> Restaurants { get; set; }
         public DbSet<Users> Users { get; set; }
+        public DbSet<Categories> Categories { get; set; }
 
 
 
@@ -48,7 +49,7 @@ namespace RestaurantManagement.Infrastructure.Data
             modelBuilder.Entity<RefreshToken>().ToTable("RefreshTokens");
             modelBuilder.Entity<Room>().ToTable("Rooms");
             modelBuilder.Entity<Table>().ToTable("Tables");
-            modelBuilder.Entity<Category>().ToTable("Categories");
+            // modelBuilder.Entity<Category>().ToTable("Categories");
             modelBuilder.Entity<Dish>().ToTable("Dishes");
             modelBuilder.Entity<Order>().ToTable("Orders");
             modelBuilder.Entity<OrderDetail>().ToTable("OrderDetails");
@@ -63,6 +64,7 @@ namespace RestaurantManagement.Infrastructure.Data
             modelBuilder.Entity<Voucher>().ToTable("vouchers");
             modelBuilder.Entity<Restaurants>().ToTable("Restaurants");
             modelBuilder.Entity<Users>().ToTable("Users");
+            modelBuilder.Entity<Categories>().ToTable("Categories");
 
 
             base.OnModelCreating(modelBuilder);

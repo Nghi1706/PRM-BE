@@ -27,7 +27,7 @@ public static class MapEndpoints
         // table endpoint
         group.MapGroup("/tables").MapTableEndpoints();
         // category endpoint
-        group.MapGroup("/categories").MapCategoryEndpoints();
+        group.MapGroup("/categories").MapCategoriesEndpoints();
         // dish endpoint
         group.MapGroup("/dishes").MapDishEndpoints();
         // order endpoint

@@ -31,7 +31,7 @@ namespace RestaurantManagement.Infrastructure
 
             services.AddScoped<ITableRepository, TableRepository>();
 
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            // services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             services.AddScoped<IDishRepository, DishRepository>();
 
@@ -54,6 +54,7 @@ namespace RestaurantManagement.Infrastructure
             services.AddScoped<IVoucherRepository, VoucherRepository>();
             services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();
             services.AddScoped<IUsersRepository, UserRepository>();
+            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
 
 
