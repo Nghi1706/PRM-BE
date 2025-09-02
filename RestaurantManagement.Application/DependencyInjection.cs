@@ -13,7 +13,7 @@ public static class DependencyInjection
         // services.AddScoped<IRestaurantService, RestaurantService>();
         //services.AddScoped<IRoleServices, RoleService>();
         // services.AddScoped<IUserService, UserService>();
-        services.AddScoped<AuthService>();
+        // services.AddScoped<AuthService>();
         services.AddScoped<IRoomService, RoomService>();
         // services.AddScoped<ITableService, TableService>();
         // services.AddScoped<ICategoryService, CategoryService>();
@@ -36,6 +36,7 @@ public static class DependencyInjection
         services.AddScoped<ITablesService, TablesService>();
         services.AddScoped<IOrdersService, OrdersService>();
         services.AddScoped<IOrderDetailsService, OrderDetailsService>();
+        services.AddScoped<IAuthService, AuthService>();
         return services;
     }
 }

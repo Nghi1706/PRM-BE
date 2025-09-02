@@ -16,7 +16,7 @@ namespace RestaurantManagement.Infrastructure.Data
         // public DbSet<Status> Status { get; set; }
         //public DbSet<Role> Roles { get; set; }
         // public DbSet<User> Users { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        // public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Room> Rooms { get; set; }
         // public DbSet<Table> Tables { get; set; }
         // public DbSet<Category> Categories { get; set; }
@@ -50,7 +50,7 @@ namespace RestaurantManagement.Infrastructure.Data
             // modelBuilder.Entity<Restaurant>().ToTable("Restaurants");
             //modelBuilder.Entity<Role>().ToTable("Roles");
             // modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<RefreshToken>().ToTable("RefreshTokens");
+            // modelBuilder.Entity<RefreshToken>().ToTable("RefreshTokens");
             modelBuilder.Entity<Room>().ToTable("Rooms");
             // modelBuilder.Entity<Table>().ToTable("Tables");
             // modelBuilder.Entity<Category>().ToTable("Categories");
