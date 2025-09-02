@@ -25,15 +25,15 @@ public static class MapEndpoints
         // room endpoint
         group.MapGroup("/rooms").MapRoomEndpoints();
         // table endpoint
-        group.MapGroup("/tables").MapTableEndpoints();
+        group.MapGroup("/tables").MapTablesEndpoints();
         // category endpoint
         group.MapGroup("/categories").MapCategoriesEndpoints();
         // dish endpoint
         group.MapGroup("/dishes").MapDishEndpoints();
         // order endpoint
-        group.MapGroup("/orders").MapOrderEndpoints();
+        group.MapGroup("/orders").MapOrdersEndpoints();
         // order detail endpoint
-        group.MapGroup("/orderdetails").MapOrderDetailEndpoints();
+        group.MapGroup("/orderdetails").MapOrderDetailsEndpoints();
         // table session endpoint
         group.MapGroup("/tablesessions").MapTableSessionEndpoints();
         // table status type endpoint

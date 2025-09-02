@@ -15,24 +15,27 @@ public static class DependencyInjection
         // services.AddScoped<IUserService, UserService>();
         services.AddScoped<AuthService>();
         services.AddScoped<IRoomService, RoomService>();
-        services.AddScoped<ITableService, TableService>();
+        // services.AddScoped<ITableService, TableService>();
         // services.AddScoped<ICategoryService, CategoryService>();
-        services.AddScoped<IDishService, DishService>();
-        services.AddScoped<IOrderService, OrderService>();
-        services.AddScoped<IOrderDetailService, OrderDetailService>();
+        // services.AddScoped<IDishService, DishService>();
+        // services.AddScoped<IOrderService, OrderService>();
+        //services.AddScoped<IOrderDetailService, OrderDetailService>();
         services.AddScoped<ITableSessionService, TableSessionService>();
         services.AddScoped<IOrderStatusTypeService, OrderStatusTypeService>();
         services.AddScoped<IDishStatusTypeService, DishStatusTypeService>();
         services.AddScoped<ITableStatusTypeService, TableStatusTypeService>();
 
         //v2
-
         services.AddScoped<IRolesServices, RolesService>();
         services.AddScoped<IStatusService, StatusService>();
         services.AddScoped<IVouchersService, VouchersService>();
         services.AddScoped<IRestaurantsService, RestaurantsService>();
         services.AddScoped<IUsersService, UsersService>();
         services.AddScoped<ICategoriesService, CategoriesService>();
+        services.AddScoped<IDishesService, DishesService>();
+        services.AddScoped<ITablesService, TablesService>();
+        services.AddScoped<IOrdersService, OrdersService>();
+        services.AddScoped<IOrderDetailsService, OrderDetailsService>();
         return services;
     }
 }

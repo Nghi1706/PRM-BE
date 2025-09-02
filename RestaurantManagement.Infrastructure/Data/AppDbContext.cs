@@ -18,11 +18,11 @@ namespace RestaurantManagement.Infrastructure.Data
         // public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<Table> Tables { get; set; }
+        // public DbSet<Table> Tables { get; set; }
         // public DbSet<Category> Categories { get; set; }
-        public DbSet<Dish> Dishes { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetail> OrderDetails { get; set; }
+        // public DbSet<Dish> Dishes { get; set; }
+        // public DbSet<Order> Orders { get; set; }
+        // public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<TableSession> TableSessions { get; set; }
         public DbSet<TableStatusType> TableStatusTypes { get; set; }
         public DbSet<OrderStatusType> OrderStatusTypes { get; set; }
@@ -35,6 +35,10 @@ namespace RestaurantManagement.Infrastructure.Data
         public DbSet<Restaurants> Restaurants { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Categories> Categories { get; set; }
+        public DbSet<Dishes> Dishes { get; set; }
+        public DbSet<Tables> Tables { get; set; }
+        public DbSet<Orders> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
 
 
@@ -48,11 +52,11 @@ namespace RestaurantManagement.Infrastructure.Data
             // modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<RefreshToken>().ToTable("RefreshTokens");
             modelBuilder.Entity<Room>().ToTable("Rooms");
-            modelBuilder.Entity<Table>().ToTable("Tables");
+            // modelBuilder.Entity<Table>().ToTable("Tables");
             // modelBuilder.Entity<Category>().ToTable("Categories");
-            modelBuilder.Entity<Dish>().ToTable("Dishes");
-            modelBuilder.Entity<Order>().ToTable("Orders");
-            modelBuilder.Entity<OrderDetail>().ToTable("OrderDetails");
+            // modelBuilder.Entity<Dish>().ToTable("Dishes");
+            // modelBuilder.Entity<Order>().ToTable("Orders");
+            // modelBuilder.Entity<OrderDetail>().ToTable("OrderDetails");
             modelBuilder.Entity<TableSession>().ToTable("TableSessions");
             modelBuilder.Entity<TableStatusType>().ToTable("TableStatusTypes");
             modelBuilder.Entity<OrderStatusType>().ToTable("OrderStatusTypes");
@@ -65,7 +69,10 @@ namespace RestaurantManagement.Infrastructure.Data
             modelBuilder.Entity<Restaurants>().ToTable("Restaurants");
             modelBuilder.Entity<Users>().ToTable("Users");
             modelBuilder.Entity<Categories>().ToTable("Categories");
-
+            modelBuilder.Entity<Dishes>().ToTable("Dishes");
+            modelBuilder.Entity<Tables>().ToTable("Tables");
+            modelBuilder.Entity<Orders>().ToTable("Orders");
+            modelBuilder.Entity<OrderDetails>().ToTable("order_details");
 
             base.OnModelCreating(modelBuilder);
 

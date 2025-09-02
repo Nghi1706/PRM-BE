@@ -29,15 +29,15 @@ namespace RestaurantManagement.Infrastructure
 
             services.AddScoped<IRoomRepository, RoomRepository>();
 
-            services.AddScoped<ITableRepository, TableRepository>();
+            // services.AddScoped<ITableRepository, TableRepository>();
 
             // services.AddScoped<ICategoryRepository, CategoryRepository>();
 
-            services.AddScoped<IDishRepository, DishRepository>();
+            // services.AddScoped<IDishRepository, DishRepository>();
 
-            services.AddScoped<IOrderRepository, OrderRepository>();
+            // services.AddScoped<IOrderRepository, OrderRepository>();
 
-            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            // services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 
             services.AddScoped<ITableSessionRepository, TableSessionRepository>();
 
@@ -55,7 +55,10 @@ namespace RestaurantManagement.Infrastructure
             services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();
             services.AddScoped<IUsersRepository, UserRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
-
+            services.AddScoped<IDishesRepository, DishesRepository>();
+            services.AddScoped<ITablesRepository, TablesRepository>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();
+            services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
 
 
 
