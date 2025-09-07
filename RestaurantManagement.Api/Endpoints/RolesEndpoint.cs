@@ -21,6 +21,8 @@ namespace RestaurantManagement.Api.Endpoints
                 return serviceResponse.ToApiResult();
             });
 
+            // Comment out Create, Update, Delete endpoints
+            /*
             group.MapPost("/", async (CreateRolesDto dto, [FromServices] IRolesServices service) =>
             {
                 var serviceResponse = await service.CreateAsync(dto);
@@ -38,6 +40,7 @@ namespace RestaurantManagement.Api.Endpoints
                 var serviceResponse = await service.DeleteAsync(id);
                 return serviceResponse.ToApiResult();
             });
+            */
 
             return group;
         }

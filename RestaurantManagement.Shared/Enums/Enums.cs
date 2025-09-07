@@ -33,10 +33,11 @@ namespace RestaurantManagement.Shared.Enums
     }
     public enum UserRole
     {
-        Host = 1,  
-        Admin = 2,
-        Employee = 3,
-        Chef = 4,
-        Customer = 5
+        Develop = 1,    // management - app
+        Admin = 2,         // admin - restaurant
+        Manager = 3,       // manage - restaurant
+        Employee = 4,      // employee - restaurant
+        Chef = 5,          // chef - restaurant
+        Guest = 6          // guest - restaurant
     }
 }

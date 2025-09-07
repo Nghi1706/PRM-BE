@@ -11,23 +11,17 @@ using DotNetEnv;
 using Microsoft.Extensions.Options;
 using RestaurantManagement.Application.Settings;
 
-
-// Api/Program.cs
 var builder = WebApplication.CreateBuilder(args);
 
 // Load environment variables
-Env.Load(); // Loads from root directory by default
+Env.Load();
 
-// JWT config từ environment variables với fallbacks
-var jwtKey = builder.Configuration["Jwt:Key"] ?? 
-             "error-config";
-var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? 
-                "error-config"; 
-var jwtAudience = builder.Configuration["Jwt:Audience"] ?? 
-                  "error-config";
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "error-config";
+var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "error-config";
+var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "error-config";
 
 // Register JwtSettings as a service
-builder.Services.Configure<JwtSettings>(options => 
+builder.Services.Configure<JwtSettings>(options =>
 {
     options.Key = jwtKey;
     options.Issuer = jwtIssuer;
@@ -51,29 +45,29 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtIssuer,
-        ValidAudience = jwtAudience, 
+        ValidAudience = jwtAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-        ClockSkew = TimeSpan.Zero 
+        ClockSkew = TimeSpan.Zero
     };
-    
 });
 
-// Config PORT 
-builder.WebHost.UseUrls("http://localhost:5000");
+// THAY ĐỔI TẠI ĐÂY - Config để listen trên tất cả IP
+// builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 // Add Services
 builder.Services.AddPresentation(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+// CẬP NHẬT CORS - Cho phép tất cả IP truy cập
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5121", "https://localhost:7134", "http://localhost:4200")
+        policy.AllowAnyOrigin()  // Cho phép tất cả IP
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyMethod();
+        // Bỏ .AllowCredentials() khi dùng AllowAnyOrigin()
     });
 });
 
@@ -108,7 +102,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Configure Middleware rõ ràng
+// Configure Middleware
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
@@ -116,20 +110,20 @@ app.UseSwaggerUI(options =>
     options.RoutePrefix = "swagger";
     options.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
     options.DefaultModelsExpandDepth(-1);
-    
-    // Show UI authorize
     options.DisplayRequestDuration();
     options.EnableDeepLinking();
     options.EnableFilter();
     options.ShowExtensions();
 });
-app.UseHttpsRedirection();
+
+// BỎ HTTPS redirect để dễ test từ HTTP
+// app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map Routes tách riêng
+// Map Routes
 app.MapGroup("/api")
    .MapAppEndpoints();
 

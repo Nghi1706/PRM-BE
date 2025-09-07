@@ -24,7 +24,7 @@ public class TablesService : ITablesService
             {
                 M08Id = table.M08Id,
                 M08Name = table.M08Name,
-                M08Position = table.M08Position,
+                M08TotalSeats = table.M08TotalSeats,
                 M08IsActive = table.M08IsActive,
                 M08RestaurantId = table.M08RestaurantId,
                 M08StatusId = table.M08StatusId,
@@ -51,7 +51,7 @@ public class TablesService : ITablesService
             {
                 M08Id = table.M08Id,
                 M08Name = table.M08Name,
-                M08Position = table.M08Position,
+                M08TotalSeats = table.M08TotalSeats,
                 M08IsActive = table.M08IsActive,
                 M08RestaurantId = table.M08RestaurantId,
                 M08StatusId = table.M08StatusId,
@@ -83,7 +83,7 @@ public class TablesService : ITablesService
             {
                 M08Id = table.M08Id,
                 M08Name = table.M08Name,
-                M08Position = table.M08Position,
+                M08TotalSeats = table.M08TotalSeats,
                 M08IsActive = table.M08IsActive,
                 M08RestaurantId = table.M08RestaurantId,
                 M08StatusId = table.M08StatusId,
@@ -108,7 +108,7 @@ public class TablesService : ITablesService
             var table = new Tables
             {
                 M08Name = dto.M08Name,
-                M08Position = dto.M08Position,
+                M08TotalSeats = dto.M08TotalSeats,
                 M08IsActive = dto.M08IsActive,
                 M08RestaurantId = dto.M08RestaurantId,
                 M08StatusId = dto.M08StatusId,
@@ -122,7 +122,7 @@ public class TablesService : ITablesService
             {
                 M08Id = table.M08Id,
                 M08Name = table.M08Name,
-                M08Position = table.M08Position,
+                M08TotalSeats = table.M08TotalSeats,
                 M08IsActive = table.M08IsActive,
                 M08RestaurantId = table.M08RestaurantId,
                 M08StatusId = table.M08StatusId,
@@ -149,7 +149,7 @@ public class TablesService : ITablesService
             }
 
             table.M08Name = dto.M08Name ?? table.M08Name;
-            table.M08Position = dto.M08Position ?? table.M08Position;
+            table.M08TotalSeats = dto.M08TotalSeats ?? table.M08TotalSeats;
             table.M08IsActive = dto.M08IsActive ?? table.M08IsActive;
             table.M08RestaurantId = dto.M08RestaurantId ?? table.M08RestaurantId;
             table.M08StatusId = dto.M08StatusId ?? table.M08StatusId;

@@ -12,7 +12,11 @@ public interface IRolesServices
 {
     Task<ServiceResponse<IEnumerable<RolesDto>>> GetAllAsync();
     Task<ServiceResponse<RolesDto>> GetByIdAsync(int id);
+
+    // Comment out Create, Update, Delete methods
+    /*
     Task<ServiceResponse<RolesDto>> CreateAsync(CreateRolesDto role);
     Task<ServiceResponse<object>> UpdateAsync(int id, UpdateRolesDto role);
     Task<ServiceResponse<object>> DeleteAsync(int id);
+    */
 }

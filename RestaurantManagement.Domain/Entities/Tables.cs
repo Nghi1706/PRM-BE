@@ -13,8 +13,8 @@ public class Tables
     [Column("m08_name")]
     public required string M08Name { get; set; }
 
-    [Column("m08_position")]
-    public int M08Position { get; set; }
+    [Column("m08_total_seats")]
+    public int M08TotalSeats { get; set; }
 
     [Column("m08_is_active")]
     public bool M08IsActive { get; set; } = true;
