@@ -1,20 +1,23 @@
-# PRM-BE - Microservices v?i Ocelot API Gateway
+# PRM-BE - Microservices với Ocelot API Gateway
 
-D? ?n microservices s? d?ng Ocelot API Gateway ?? qu?n l? routing v? load balancing.
+Dự án microservices sử dụng Ocelot API Gateway để quản lý routing và load balancing.
 
-## ?? Ki?n tr?c d? ?n
+## 🏗️ Kiến trúc dự án
 
 ```
 PRM-BE/
-������ src/
-��   ������ ApiGateway/          # Ocelot API Gateway (Port 7162/5193)
-��   ������ Services/
-��       ������ OrderService/    # Qu?n l? ??n h?ng (Port 7237/5014)
-��       ������ UserService/     # Qu?n l? ng??i d?ng (Port 7021/5108)
-��       ������ ProductService/  # Qu?n l? s?n ph?m (Port 7240/5110)
+├── src/
+│   ├── ApiGateway/          # Ocelot API Gateway (HTTP: 5001)
+│   └── Services/
+│       ├── OrderService/    # Quản lý đơn hàng (HTTP: 5014)
+│       └── ProductService/  # Quản lý sản phẩm (HTTP: 5110)
+│
+│   └── AuthService/         # Xác thực/ủy quyền (HTTP: 5064)
 ```
 
-## ? C?ch ch?y d? ?n
+Lưu ý: API Gateway đang được cấu hình lắng nghe tại `http://localhost:5001` trong `Program.cs` (UseUrls). Các service lắng nghe theo cổng HTTP như trên.
+
+## 🚀 Cách chạy dự án
 
 ### 1. Restore packages
 ```bash
@@ -26,127 +29,140 @@ dotnet restore
 dotnet build
 ```
 
-### 3. Ch?y c?c services
+### 3. Chạy các services
 
-#### Terminal 1 - ApiGateway:
+- Terminal 1 - ApiGateway:
 ```bash
 cd src/ApiGateway
 dotnet run
 ```
 
-#### Terminal 2 - OrderService:
+- Terminal 2 - OrderService:
 ```bash
 cd src/Services/OrderService
 dotnet run
 ```
 
-#### Terminal 3 - UserService:
-```bash
-cd src/Services/UserService
-dotnet run
-```
-
-#### Terminal 4 - ProductService:
+- Terminal 3 - ProductService:
 ```bash
 cd src/Services/ProductService
 dotnet run
 ```
 
-## ? Endpoints
+- Terminal 4 - AuthService:
+```bash
+cd src/AuthService
+dotnet run
+```
+
+## 🔗 Endpoints
 
 ### API Gateway (Ocelot)
-- **URL**: https://localhost:7162
-- **Swagger**: https://localhost:7162/swagger
+- URL: http://localhost:5001
+- Swagger: http://localhost:5001/swagger
 
 ### Order Service
-- **Direct URL**: http://localhost:5014
-- **Through Gateway**: https://localhost:7162/orders
-- **Swagger**: http://localhost:5014/swagger
-
-### User Service
-- **Direct URL**: http://localhost:5108
-- **Through Gateway**: https://localhost:7162/users
-- **Swagger**: http://localhost:5108/swagger
+- Direct URL: http://localhost:5014
+- Through Gateway: http://localhost:5001/orders
+- Swagger: http://localhost:5014/swagger
 
 ### Product Service
-- **Direct URL**: http://localhost:5110
-- **Through Gateway**: https://localhost:7162/products
-- **Swagger**: http://localhost:5110/swagger
+- Direct URL: http://localhost:5110
+- Through Gateway: http://localhost:5001/products (nếu được cấu hình trong Ocelot)
+- Swagger: http://localhost:5110/swagger
 
-## ? C?u h?nh Ocelot
+### Auth Service
+- Direct URL: http://localhost:5064
+- Through Gateway: http://localhost:5001/auth (POST)
+- OpenAPI (JSON): http://localhost:5064/openapi/v1.json
 
-File `src/ApiGateway/ocelot.json` ??nh ngh?a routing:
+## ⚙️ Cấu hình Ocelot
+
+File `src/ApiGateway/ocelot.Local.json` định nghĩa routing:
 
 ```json
 {
+  "GlobalConfiguration": {
+    "BaseUrl": "http://0.0.0.0:5001"
+  },
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/orders/{everything}",
+      "DownstreamPathTemplate": "/api/order/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "localhost", "Port": 5014 }],
       "UpstreamPathTemplate": "/orders/{everything}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5014
-        }
-      ]
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/order",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "localhost", "Port": 5014 }],
+      "UpstreamPathTemplate": "/orders",
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "localhost", "Port": 5064 }],
+      "UpstreamPathTemplate": "/auth/{everything}",
+      "UpstreamHttpMethod": ["POST"]
     }
   ]
 }
 ```
 
-## ? API Endpoints
+Lưu ý: File mẫu trên đã có sẵn trong repo (`ocelot.Local.json`). Khi chạy trong Docker, gateway sẽ dùng `ocelot.Docker.json` (được chọn qua biến môi trường `RUNNING_IN_DOCKER`).
+
+## 📚 API Endpoints
 
 ### Orders
-- `GET /orders` - L?y danh s?ch ??n h?ng
-- `GET /orders/{id}` - L?y ??n h?ng theo ID
-- `POST /orders` - T?o ??n h?ng m?i
-- `PUT /orders/{id}` - C?p nh?t ??n h?ng
-- `DELETE /orders/{id}` - X?a ??n h?ng
-
-### Users
-- `GET /users` - L?y danh s?ch ng??i d?ng
-- `GET /users/{id}` - L?y ng??i d?ng theo ID
-- `POST /users` - T?o ng??i d?ng m?i
-- `PUT /users/{id}` - C?p nh?t ng??i d?ng
-- `DELETE /users/{id}` - X?a ng??i d?ng
+- `GET /orders` - Lấy danh sách đơn hàng
+- `GET /orders/{id}` - Lấy đơn hàng theo ID
+- `POST /orders` - Tạo đơn hàng mới
+- `PUT /orders/{id}` - Cập nhật đơn hàng
+- `DELETE /orders/{id}` - Xóa đơn hàng
 
 ### Products
-- `GET /products` - L?y danh s?ch s?n ph?m
-- `GET /products/{id}` - L?y s?n ph?m theo ID
-- `POST /products` - T?o s?n ph?m m?i
-- `PUT /products/{id}` - C?p nh?t s?n ph?m
-- `DELETE /products/{id}` - X?a s?n ph?m
+- `GET /products` - Lấy danh sách sản phẩm
+- `GET /products/{id}` - Lấy sản phẩm theo ID
+- `POST /products` - Tạo sản phẩm mới
+- `PUT /products/{id}` - Cập nhật sản phẩm
+- `DELETE /products/{id}` - Xóa sản phẩm
 
-## ?? C?ng ngh? s? d?ng
+### Auth
+- `POST /auth/login` - Đăng nhập
+- `POST /auth/logout` - Đăng xuất
 
-- **.NET 9.0** - Framework ch?nh
+## 🧰 Công nghệ sử dụng
+
+- **.NET 9.0** - Framework chính
 - **Ocelot** - API Gateway
 - **ASP.NET Core Web API** - Microservices
-- **Swagger/OpenAPI** - API Documentation
+- **Swagger/OpenAPI** - Tài liệu API
 
-## ? Y?u c?u h? th?ng
+## 📦 Yêu cầu hệ thống
 
 - .NET 9.0 SDK
-- Visual Studio 2022 ho?c VS Code
+- Visual Studio 2022 hoặc VS Code
 - Git
 
-## ? Debug v? Development
+## 🐞 Debug và Development
 
-### M? trong Visual Studio
-1. M? file `PRM-BE.sln`
+### Mở trong Visual Studio
+1. Mở file `PRM-BE.sln`
 2. Set multiple startup projects:
    - ApiGateway
    - OrderService
-   - UserService
    - ProductService
+   - AuthService
 
-### M? trong VS Code
+### Mở trong VS Code
 ```bash
 code .
 ```
 
-## ? T?i li?u tham kh?o
+## 📖 Tài liệu tham khảo
 
 - [Ocelot Documentation](https://ocelot.readthedocs.io/)
-- [ASP.NET Core Documentation](https://docs.microsoft.com/en-us/aspnet/core/)
+- [ASP.NET Core Documentation](https://learn.microsoft.com/aspnet/core/)
 - [Microservices Architecture](https://microservices.io/)

@@ -14,7 +14,7 @@ builder.WebHost.UseUrls("http://0.0.0.0:5001");
 
 // Add configuration sources
 var runningInDocker = Environment.GetEnvironmentVariable("RUNNING_IN_DOCKER") == "true";
-var ocelotConfigFile = runningInDocker ? "ocelot.Docker.json" : "ocelot.Local.json";
+var ocelotConfigFile = runningInDocker ? "ocelot.Docker.json" : "ocelot.json";
 
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
