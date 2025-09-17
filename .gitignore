@@ -1,0 +1,130 @@
+# ------------------------
+# OS / General
+# ------------------------
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.swo
+nohup.out
+
+# ------------------------
+# IDEs: VS, Rider, VS Code
+# ------------------------
+.vs/
+.idea/
+*.iml
+.vscode/
+
+# ------------------------
+# User-specific files
+# ------------------------
+*.user
+*.suo
+*.rsuser
+*.userosscache
+*.sln.docstates
+*.vcxproj.user
+*.csproj.user
+*.vbproj.user
+PRM-BE.slnLaunch.user
+
+# ------------------------
+# .NET build outputs
+# ------------------------
+**/bin/
+**/obj/
+**/out/
+**/Debug/
+**/Release/
+**/x64/
+**/x86/
+
+# Symbols / diagnostics
+*.pdb
+*.mdb
+*.dmp
+*.ipch
+
+# ------------------------
+# Tests
+# ------------------------
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# ------------------------
+# NuGet
+# ------------------------
+packages/
+*.nupkg
+*.snupkg
+.nuget/NuGet.Config
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Publish profiles
+**/Properties/PublishProfiles/
+*.pubxml
+*.pubxml.user
+
+# NuGet/cache artifacts inside obj
+**/obj/**/project.assets.json
+**/obj/**/project.nuget.cache
+**/obj/**/project.lock.json
+*.cache
+
+# ------------------------
+# App settings (keep base appsettings.json only)
+# ------------------------
+**/appsettings.*.json
+!**/appsettings.json
+# common variations
+**/*.Local.json
+**/*local.json
+**/*secrets*.json
+secrets.json
+
+# Api Gateway Ocelot local config
+# **/ocelot.Local.json
+
+# ------------------------
+# Docker / Compose
+# ------------------------
+# keep main docker-compose.yml; ignore local overrides
+**/docker-compose.*.override.yml
+**/docker-compose.override.yml
+
+# ------------------------
+# Coverage / reports
+# ------------------------
+coverage/
+.coverage/
+coverlet/**/*.xml
+
+# ------------------------
+# Local DB files
+# ------------------------
+*.db
+*.sqlite
+*.sqlite3
+
+# ------------------------
+# Env / misc tooling
+# ------------------------
+.env
+.env.*
+.nyc_output/
+
+# ------------------------
+# ReSharper / JetBrains
+# ------------------------
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+.dotCover

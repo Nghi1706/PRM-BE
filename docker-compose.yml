@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  orderservice:
+    image: orderservice
+    build:
+      context: ./src/Services/OrderService
+      dockerfile: Dockerfile
+    ports:
+      - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - RUNNING_IN_DOCKER=true
+    networks:
+      - microservice-network
+  apigateway:
+    image: apigateway
+    build:
+      context: ./src/ApiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RUNNING_IN_DOCKER=true
+    depends_on:
+      - orderservice
+    networks:
+      - microservice-network
+networks:
+  microservice-network:
+    driver: bridge

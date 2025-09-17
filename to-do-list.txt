@@ -1,0 +1,7 @@
+1. Thiết lập xác thực (authentication) và phân quyền (authorization) bằng JWT trên ApiGateway để bảo vệ hệ thống.
+2. Xây dựng service đăng nhập (login) để tạo và trả về JWT token cho người dùng sau khi xác thực thành công.
+3. Thêm health check cho từng service để giám sát tình trạng hoạt động và phát hiện sự cố sớm.
+4. Áp dụng Choreography Saga pattern để thực hiện rollback các service khi có lỗi, đảm bảo dữ liệu đồng bộ giữa các service.
+5. Cấu hình Dead Letter Queue (DLQ) trong RabbitMQ để lưu trữ và xử lý các message lỗi không thể xử lý thành công.
+6. Tích hợp logging và monitoring cho các service để dễ dàng theo dõi, phát hiện lỗi và debug hệ thống.
+7. Thêm rate limiting trên ApiGateway để ngăn chặn các cuộc tấn công từ chối dịch vụ (DoS) và bảo vệ tài nguyên hệ thống.
