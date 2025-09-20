@@ -5,110 +5,169 @@
 This is a .NET 8 restaurant management API following Clean Architecture principles with 5 layers:
 
 - **Api**: Minimal API endpoints using RouteGroupBuilder pattern
-- **Application**: Business logic, services, DTOs, and mapping
+- **Application**: Business logic, services, DTOs, and interfaces
 - **Domain**: Entity models with database column attributes
 - **Infrastructure**: EF Core repositories and data access
-- **Shared**: Common responses and utilities
+- **Shared**: Common responses, enums, and utilities
 
 ## Key Patterns & Conventions
 
 ### Entity Naming Convention
 
-All entities use Vietnamese database naming (M##\_field format):
+All entities use Vietnamese database naming (M##\_field format) with English table names:
 
 ```csharp
-[Column("m09_id")]
-public Guid M09Id { get; set; }
+[Table("dishes")]
+public class Dishes
+{
+    [Column("m07_id")]
+    [Key]
+    public int M07Id { get; set; }
+
+    [Column("m07_name")]
+    public required string M07Name { get; set; }
+}
 ```
 
-When adding new entities, follow this pattern and map to descriptive C# property names.
+Mixed ID types: `Guid` for most entities, `int` for categories/dishes/tables/status.
+
+### Dual Response Pattern
+
+Services use `ServiceResponse<T>` internally, converted to `ApiResponse<T>` at endpoints:
+
+```csharp
+// In Service
+return ServiceResponse<DishesDto>.NotFound("Dish not found");
+
+// In Endpoint
+var serviceResponse = await service.GetByIdAsync(id);
+return serviceResponse.ToApiResult(); // Extension converts to IResult
+```
+
+Both have same static methods: `Success()`, `NotFound()`, `Error()`, `BadRequest()`, etc.
 
 ### Endpoint Structure
 
-All endpoints use RouteGroupBuilder with centralized mapping in `MapEndpoints.cs`:
+All endpoints use RouteGroupBuilder with centralized mapping:
 
 ```csharp
-group.MapGroup("/tables").MapTablesEndpoints();
+// MapEndpoints.cs
+group.MapGroup("/dishes").MapDishEndpoints();
+
+// Program.cs
+app.MapGroup("/api").MapAppEndpoints();
 ```
 
-New endpoints should follow this pattern and be added to `MapAppEndpoints()`.
+Endpoints use `[FromServices]` injection and return `ToApiResult()`.
 
-### Service Response Pattern
+### Version Coexistence (Critical)
 
-All services return `ServiceResponse<T>` with consistent success/error handling:
+**v1 (Legacy)**: Commented out in DI files but entities still exist
+**v2 (Active)**: Current implementation with M## column naming
 
-```csharp
-public static ServiceResponse<T> Success(T data, string message = "Operation completed successfully")
-public static ServiceResponse<T> NotFound(string message = "Resource not found")
-```
-
-Use `ToApiResult()` extension to convert to HTTP responses in endpoints.
-
-### Dependency Injection Registration
-
-Services are registered in layer-specific DI files:
-
-- `Application/DependencyInjection.cs` - Business services
-- `Infrastructure/DependencyInjection.cs` - Repositories and DbContext
-- Both v1 and v2 service registrations exist (v2 is current)
-
-### Authentication & Security
-
-- JWT Bearer authentication with custom settings in `JwtSettings`
-- Environment variables loaded via DotNetEnv
-- CORS configured for development (AllowAnyOrigin)
-- Swagger with JWT Bearer support configured
-
-## Development Workflows
-
-### Database Connection
-
-Uses SQL Server with connection string in `appsettings.json`. Entity Framework migrations should be run from Infrastructure project:
-
-```bash
-dotnet ef migrations add MigrationName --project RestaurantManagement.Infrastructure
-dotnet ef database update --project RestaurantManagement.Infrastructure
-```
-
-### Running the Application
-
-The API runs on `http://0.0.0.0:5000` and `https://0.0.0.0:5001` with Swagger at `/swagger`.
-
-### Adding New Features
-
-1. Create entity in `Domain/Entities` with proper column attributes
-2. Add to `AppDbContext` DbSet
-3. Create DTOs in `Application/DTOs` (Dto, CreateDto, UpdateDto pattern)
-4. Create interface and service in `Application/Services`
-5. Create repository interface and implementation in `Infrastructure`
-6. Register services in respective DI files
-7. Create endpoint file in `Api/Endpoints` and register in `MapEndpoints.cs`
-8. Add AutoMapper profile in `Application/Mapping` if needed
-
-## Critical Integration Points
-
-### Database Layer
-
-- `AppDbContext` contains both v1 (commented) and v2 (active) DbSets
-- Entity configurations use `ToTable()` method in `OnModelCreating`
-- Repository pattern with generic interfaces in Domain layer
-
-### AutoMapper Usage
-
-Mapping profiles follow naming pattern: `{Entity}Profile.cs`
-Standard mappings: Entity ↔ Dto, CreateDto → Entity, UpdateDto → Entity
+Both versions coexist in `AppDbContext` - only register v2 services.
 
 ### Authentication Flow
 
-- Login endpoint returns JWT + refresh token
-- RefreshToken endpoint for token renewal
-- Logout endpoint invalidates refresh tokens
-- All secured endpoints require "Bearer {token}" header
+JWT-based auth with refresh tokens using `AuthService`:
+
+```csharp
+// JWT claims include: NameIdentifier, Email, RestaurantId, Role
+// Access token: 12 hours, Refresh token: 7 days
+// No database storage - tokens are stateless JWTs
+```
+
+Login returns `AuthResponseDto` with user info + both tokens.
+
+## Development Workflows
+
+### Database Migrations
+
+Always run from Infrastructure project:
+
+```bash
+dotnet ef migrations add MigrationName --project RestaurantManagement.Infrastructure --startup-project RestaurantManagement.Api
+dotnet ef database update --project RestaurantManagement.Infrastructure --startup-project RestaurantManagement.Api
+```
+
+### Environment Setup
+
+- Uses `DotNetEnv` for `.env` file loading
+- JWT settings configured in `Program.cs` from config/env vars
+- CORS allows all origins for development
+- HTTPS redirect disabled intentionally
+
+### Building & Running
+
+```bash
+dotnet build RestaurantManagement.sln
+dotnet run --project RestaurantManagement.Api
+```
+
+API runs on ports 5000 (HTTP) / 5001 (HTTPS) with Swagger at `/swagger`.
+
+### Adding New Features
+
+1. **Entity**: Create in `Domain/Entities` with `[Table("name")]` and `[Column("m##_field")]`
+2. **DbContext**: Add `DbSet<Entity>` to v2 section + `ToTable()` in `OnModelCreating`
+3. **Repository**: Interface in `Domain/Interfaces`, implementation in `Infrastructure/Repositories`
+4. **DTOs**: Create `EntityDto`, `CreateEntityDto`, `UpdateEntityDto` in `Application/DTOs`
+5. **Service**: Interface and implementation in `Application/Interfaces` and `Services`
+6. **DI Registration**: Add to both `Application/DependencyInjection.cs` and `Infrastructure/DependencyInjection.cs`
+7. **Endpoints**: Create endpoint class in `Api/Endpoints` and register in `MapEndpoints.cs`
+8. **Mapping**: Manual mapping in services (no AutoMapper for v2)
+
+## Critical Integration Points
+
+### Service Layer Patterns
+
+Services use constructor injection and return `ServiceResponse<T>`:
+
+```csharp
+public async Task<ServiceResponse<EntityDto>> GetByIdAsync(int id)
+{
+    try
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null)
+            return ServiceResponse<EntityDto>.NotFound("Entity not found");
+
+        // Manual mapping to DTO
+        var dto = new EntityDto { /* map properties */ };
+
+        return ServiceResponse<EntityDto>.Success(dto);
+    }
+    catch (Exception ex)
+    {
+        return ServiceResponse<EntityDto>.Error($"Error: {ex.Message}");
+    }
+}
+```
+
+### Repository Pattern
+
+Generic repository interfaces in Domain, implementations in Infrastructure using EF Core:
+
+```csharp
+public interface IEntityRepository
+{
+    Task<IEnumerable<Entity>> GetAllAsync();
+    Task<Entity?> GetByIdAsync(int id);
+    Task AddAsync(Entity entity);
+    Task UpdateAsync(Entity entity);
+    Task<bool> DeleteAsync(int id);
+}
+```
+
+### Password Handling
+
+Uses `BCrypt.Net` for hashing in `UsersService.CreateAsync()` and verification in `AuthService.LoginAsync()`.
 
 ## Project-Specific Notes
 
-- Mixed v1/v2 code exists - v2 is the current active version
-- Vietnamese comments in some files indicate legacy/configuration notes
-- HTTPS redirect is intentionally disabled for development
-- Entity naming uses Hungarian notation (M##) mapping to legacy database schema
-- All entities use Guid primary keys except for some legacy integer keys
+- Vietnamese comments indicate development/deployment configurations
+- Entity naming follows legacy database schema (M01=roles, M02=status, etc.)
+- Some entities have mixed casing in table names (`Categories` vs `categories`)
+- JWT tokens are stateless - no database refresh token storage in v2
+- All timestamps use `DateTime.UtcNow` defaults
+- Boolean fields default to `true` for active status

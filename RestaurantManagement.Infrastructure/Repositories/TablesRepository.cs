@@ -14,9 +14,17 @@ public class TablesRepository : ITablesRepository
     public async Task<IEnumerable<Tables>> GetAllAsync()
         => await _context.Tables.Where(t => t.M08IsActive).ToListAsync();
 
-    public async Task<IEnumerable<Tables>> GetByRestaurantIdAsync(Guid restaurantId)
-        => await _context.Tables.Where(t => t.M08RestaurantId == restaurantId && t.M08IsActive).ToListAsync();
+    public async Task<IEnumerable<(Tables Tables, string? M02Name)>> GetByRestaurantIdAsync(Guid restaurantId)
+    {
+        var query = from table in _context.Tables 
+                    join status in _context.Status on table.M08StatusId equals status.M02Id into statusGroup
+                    from status in statusGroup.DefaultIfEmpty()
+                    where table.M08RestaurantId == restaurantId && status.M02ForTable  == "tables"
+                    select new {Table = table , M02Name = status != null ? status.M02Name : null };
 
+        var result = await query.ToListAsync();
+        return result.Select(x => (x.Table, x.M02Name));
+    }
     public async Task<Tables?> GetByIdAsync(int id)
         => await _context.Tables.FindAsync(id);
 

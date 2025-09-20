@@ -42,6 +42,8 @@ public static class MapEndpoints
         group.MapGroup("/orderstatustypes").MapOrderStatusTypeEndpoints();
         // dish status type endpoint
         group.MapGroup("/dishstatustypes").MapDishStatusTypeEndpoints();
+        // file upload endpoint
+        group.MapGroup("/files").MapFileUploadEndpoints();
 
 
         return group;

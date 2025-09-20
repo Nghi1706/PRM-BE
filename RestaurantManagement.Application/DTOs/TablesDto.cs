@@ -8,6 +8,7 @@ public class TablesDto
     public bool M08IsActive { get; set; }
     public Guid M08RestaurantId { get; set; }
     public int M08StatusId { get; set; }
+    public string M02Name { get; set; } = "Không xác định";
     public DateTime? M08CreatedAt { get; set; }
     public Guid? M08CreatedBy { get; set; }
     public DateTime? M08UpdatedAt { get; set; }

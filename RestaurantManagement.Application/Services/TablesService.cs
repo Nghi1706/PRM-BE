@@ -1,4 +1,4 @@
-using RestaurantManagement.Application.Common;
+﻿using RestaurantManagement.Application.Common;
 using RestaurantManagement.Application.DTOs;
 using RestaurantManagement.Application.Interfaces;
 using RestaurantManagement.Domain.Entities;
@@ -46,19 +46,20 @@ public class TablesService : ITablesService
     {
         try
         {
-            var tables = await _tablesRepository.GetByRestaurantIdAsync(restaurantId);
-            var tableDtos = tables.Select(table => new TablesDto
+            var item = await _tablesRepository.GetByRestaurantIdAsync(restaurantId);
+            var tableDtos = item.Select(item => new TablesDto
             {
-                M08Id = table.M08Id,
-                M08Name = table.M08Name,
-                M08TotalSeats = table.M08TotalSeats,
-                M08IsActive = table.M08IsActive,
-                M08RestaurantId = table.M08RestaurantId,
-                M08StatusId = table.M08StatusId,
-                M08CreatedAt = table.M08CreatedAt,
-                M08CreatedBy = table.M08CreatedBy,
-                M08UpdatedAt = table.M08UpdatedAt,
-                M08UpdatedBy = table.M08UpdatedBy
+                M08Id = item.Tables.M08Id,
+                M08Name = item.Tables.M08Name,
+                M08TotalSeats = item.Tables.M08TotalSeats,
+                M08IsActive = item.Tables.M08IsActive,
+                M08RestaurantId = item.Tables.M08RestaurantId,
+                M08StatusId = item.Tables.M08StatusId,
+                M02Name = item.M02Name ?? "Không xác định",
+                M08CreatedAt = item.Tables.M08CreatedAt,
+                M08CreatedBy = item.Tables.M08CreatedBy,
+                M08UpdatedAt = item.Tables.M08UpdatedAt,
+                M08UpdatedBy = item.Tables.M08UpdatedBy
             }).ToList();
 
             return ServiceResponse<IEnumerable<TablesDto>>.Success(tableDtos);

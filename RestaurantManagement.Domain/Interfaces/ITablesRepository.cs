@@ -5,7 +5,7 @@ namespace RestaurantManagement.Domain.Interfaces;
 public interface ITablesRepository
 {
     Task<IEnumerable<Tables>> GetAllAsync();
-    Task<IEnumerable<Tables>> GetByRestaurantIdAsync(Guid restaurantId);
+    Task<IEnumerable<(Tables Tables, string? M02Name)>> GetByRestaurantIdAsync(Guid restaurantId);
     Task<Tables?> GetByIdAsync(int id);
     Task AddAsync(Tables entity);
     Task UpdateAsync(Tables entity);

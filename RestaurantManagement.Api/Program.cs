@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using DotNetEnv;
 using Microsoft.Extensions.Options;
 using RestaurantManagement.Application.Settings;
+using Microsoft.AspNetCore.Http.Features;
+using RestaurantManagement.Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +61,12 @@ builder.Services.AddPresentation(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+// Configure multipart form options for file upload
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10MB limit
+});
+
 // CẬP NHẬT CORS - Cho phép tất cả IP truy cập
 builder.Services.AddCors(options =>
 {
@@ -75,6 +83,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantManagement API", Version = "v1" });
+
+    // Add file upload support for Swagger
+    options.OperationFilter<FileUploadOperationFilter>();
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
