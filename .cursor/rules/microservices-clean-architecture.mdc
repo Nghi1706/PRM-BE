@@ -1,0 +1,16 @@
+---
+description: >
+  Quy t?c n?y ?p d?ng cho to?n b? d? ?n microservices s? d?ng ki?n tr?c Clean Architecture, 
+  v?i c?c th?nh ph?n: SQL Server (l?u tr? d? li?u), RabbitMQ (message broker), Redis (cache/blacklist), 
+  ??m b?o c?c nguy?n t?c t?ch bi?t layer (Application, Domain, Infrastructure, Presentation), 
+  m?i service ??c l?p, giao ti?p qua message broker ho?c HTTP, kh?ng chia s? database tr?c ti?p, 
+  v? tu?n th? c?c best practices v? dependency injection, c?u h?nh, logging, exception handling.
+globs:
+  - "src/**"
+  - "services/**"
+  - "infrastructure/**"
+  - "presentation/**"
+  - "domain/**"
+  - "application/**"
+alwaysApply: true
+---

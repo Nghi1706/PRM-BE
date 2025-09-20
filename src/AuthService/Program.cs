@@ -6,6 +6,7 @@ using AuthService.Application.Services;
 using AuthService.Domain.Interfaces;
 using AuthService.Infrastructure.Data;
 using AuthService.Infrastructure.Services;
+using Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Add Common services
+builder.Services.AddCommonServices(builder.Configuration);
+
+// Add Database Context
+builder.Services.AddDatabaseContext<AuthDbContext>(builder.Configuration, "AuthConnection");
 
 // Configure JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

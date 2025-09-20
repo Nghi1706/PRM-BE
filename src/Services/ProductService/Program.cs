@@ -1,6 +1,10 @@
-using Common.Utilities;
+using Common.Application.Interfaces;
+using Common.Application.Services;
 using Common.Configurations;
+using Common.Extensions;
 using ProductService.Consumer;
+using ProductService.Domain.Interfaces;
+using ProductService.Infrastructure.Data;
 using ProductService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,12 +14,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure RabbitMQ
-builder.Services.Configure<RabbitMqSettings>(
-    builder.Configuration.GetSection("RabbitMQSettings"));
+// Add Common services
+builder.Services.AddCommonServices(builder.Configuration);
 
+// Add Database Context
+builder.Services.AddDatabaseContext<ProductDbContext>(builder.Configuration, "ProductConnection");
+
+// Configure RabbitMQ
+builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMqSettings"));
+
+// Register services
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductAppService>();
-builder.Services.AddSingleton<RabbitMqConfigHelper>();
 builder.Services.AddHostedService<ProductConsumer>();
 
 var app = builder.Build();
